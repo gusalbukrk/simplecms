@@ -1,5 +1,8 @@
 RewriteEngine On
 RewriteBase /
+
+# ignore rewrite if there's an existing directory or file that meets the match
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
+
 RewriteRule ^(.+)$ index.php [QSA,L]
