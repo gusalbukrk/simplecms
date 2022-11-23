@@ -10,12 +10,21 @@
 
 <body>
   <?php
-  $req = $_SERVER['REQUEST_URI'];
+  $domain = explode(".", $_SERVER['HTTP_HOST']);
+  $path = $_SERVER['REQUEST_URI'];
 
-  echo $req . "</br>";
-  echo $_SERVER['HTTP_HOST'] . "</br>";
+  if (count($domain) > 3) {
+    require __DIR__ . '/views/404.php';
+    exit();
+  }
 
-  switch ($req) {
+  $subdomain = count($domain) == 2 || $domain[0] == "www" ? "" : $domain[0];
+
+  echo var_dump($domain) . "</br>";
+  echo $path . "</br>";
+  echo "subdomain: $subdomain</br>";
+
+  switch ($path) {
     case "":
     case "/":
       require __DIR__ . '/views/index.php';
