@@ -3,13 +3,13 @@ services:
     www:
         build: .
         ports: 
-            - 8080:80
+            - 80:80
         volumes:
             - ./www:/var/www/html/
     db:
         image: mysql:8.0.31
         ports: 
-            - 3307:3306
+            - 3306:3306
         environment:
             MYSQL_DATABASE: db
             MYSQL_USER: user
@@ -20,6 +20,6 @@ services:
     phpmyadmin:
         image: phpmyadmin:5.2.0
         ports:
-            - 8282:80
+            - 82:80
 volumes:
     persistent:
