@@ -4,8 +4,11 @@ services:
         build: .
         ports: 
             - 80:80
+            - 443:443
         volumes:
             - ./www:/var/www/html/
+            - ./conf:/etc/apache2/sites-available
+            - /etc/letsencrypt/:/etc/letsencrypt/
     db:
         image: mysql:8.0.31
         ports: 
