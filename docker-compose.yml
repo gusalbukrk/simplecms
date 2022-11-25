@@ -7,7 +7,7 @@ services:
             - 443:443
         volumes:
             - ./www:/var/www/html/
-            - ./conf:/etc/apache2/sites-available
+            - ./sites-available:/etc/apache2/sites-available
             - /etc/letsencrypt/:/etc/letsencrypt/
     db:
         image: mysql:8.0.31
