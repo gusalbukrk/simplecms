@@ -24,6 +24,19 @@
   echo $path . "</br>";
   echo "subdomain: $subdomain</br>";
 
+  $servername = "db";
+  $username = "admin";
+  $password = "adminpw";
+  $port = "3306";
+  //
+  try {
+    $conn = new PDO("mysql:host=$servername;port=$port", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Connected succesfully";
+  } catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+  }
+
   switch ($path) {
     case "":
     case "/":
