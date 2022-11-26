@@ -1,47 +1,47 @@
 version: '3.9'
 services:
-    www:
-        container_name: www
-        build:
-            context: .
-            dockerfile: php.Dockerfile
-        restart: always
-        ports: 
-            - 80:80
-            - 443:443
-        volumes:
-            - ./www:/var/www/html/
-            - ./sites-available:/etc/apache2/sites-available
-            - /etc/letsencrypt/:/etc/letsencrypt/
+  www:
+    container_name: www
+    build:
+      context: .
+      dockerfile: php.Dockerfile
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./www:/var/www/html/
+      - ./sites-available:/etc/apache2/sites-available
+      - /etc/letsencrypt/:/etc/letsencrypt/
 
-    db:
-        container_name: db
-        image: mysql:8.0.31
-        restart: always
-        expose:
-            - 3306
-        environment:
-            MYSQL_USER: admin
-            MYSQL_PASSWORD_FILE: /run/secrets/db_password
-            MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password 
-        volumes:
-            - db-data:/var/lib/mysql
-        secrets:
-            - db_password
-            - db_root_password
+  db:
+    container_name: db
+    image: mysql:8.0.31
+    restart: always
+    expose:
+      - 3306
+    environment:
+      MYSQL_USER: admin
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    volumes:
+      - db-data:/var/lib/mysql
+    secrets:
+      - db_password
+      - db_root_password
 
-    admin:
-        container_name: admin
-        image: phpmyadmin:5.2.0
-        restart: always
-        ports:
-            - 82:80
+  admin:
+    container_name: admin
+    image: phpmyadmin:5.2.0
+    restart: always
+    ports:
+      - 82:80
 
 secrets:
-    db_root_password:
-        file: db_root_password.txt
-    db_password:
-        file: db_password.txt
+  db_root_password:
+    file: db_root_password.txt
+  db_password:
+    file: db_password.txt
 
 volumes:
-    db-data:
+  db-data:
