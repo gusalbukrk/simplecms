@@ -21,11 +21,14 @@ services:
         expose:
             - 3306
         environment:
-            MYSQL_USER: user
-            MYSQL_PASSWORD: pass
-            MYSQL_ROOT_PASSWORD: root 
+            MYSQL_USER: admin
+            MYSQL_PASSWORD_FILE: /run/secrets/db_password
+            MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password 
         volumes:
             - db-data:/var/lib/mysql
+        secrets:
+            - db_password
+            - db_root_password
 
     admin:
         container_name: admin
@@ -33,6 +36,12 @@ services:
         restart: always
         ports:
             - 82:80
+
+secrets:
+    db_root_password:
+        file: db_root_password.txt
+    db_password:
+        file: db_password.txt
 
 volumes:
     db-data:
