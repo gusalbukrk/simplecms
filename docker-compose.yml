@@ -1,7 +1,11 @@
-version: "3.9"
+version: '3.9'
 services:
     www:
-        build: .
+        container_name: www
+        build:
+            context: .
+            dockerfile: php.Dockerfile
+        restart: always
         ports: 
             - 80:80
             - 443:443
@@ -9,20 +13,26 @@ services:
             - ./www:/var/www/html/
             - ./sites-available:/etc/apache2/sites-available
             - /etc/letsencrypt/:/etc/letsencrypt/
+
     db:
+        container_name: db
         image: mysql:8.0.31
-        ports: 
-            - 3306:3306
+        restart: always
+        expose:
+            - 3306
         environment:
-            MYSQL_DATABASE: db
             MYSQL_USER: user
             MYSQL_PASSWORD: pass
             MYSQL_ROOT_PASSWORD: root 
         volumes:
-            - persistent:/var/lib/mysql
-    phpmyadmin:
+            - db-data:/var/lib/mysql
+
+    admin:
+        container_name: admin
         image: phpmyadmin:5.2.0
+        restart: always
         ports:
             - 82:80
+
 volumes:
-    persistent:
+    db-data:
