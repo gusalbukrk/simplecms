@@ -24,6 +24,23 @@
   echo "path: $path</br>";
   echo "subdomain: $subdomain</br>";
 
+  try {
+    $servername = "db";
+    $username = "root";
+    $password = "rootpw";
+    $port = "3306";
+
+    $options = [
+      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    ];
+
+    $conn = new PDO("mysql:host=$servername;port=$port", $username, $password, $options);
+
+    echo "Connected successfully</br>";
+  } catch (PDOException $e) {
+    echo "<b>Couldn't connect to MySQL</b>: " . $e->getMessage();
+  }
+
   switch ($path) {
     case "":
     case "/":
@@ -37,6 +54,7 @@
       require_once __DIR__ . '/views/404.php';
   }
 
+  $conn = null;
   ?>
 </body>
 
