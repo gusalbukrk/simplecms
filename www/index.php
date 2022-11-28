@@ -46,6 +46,9 @@
     case "/":
       require_once __DIR__ . '/views/index.php';
       break;
+    case "/admin":
+      require_once __DIR__ . '/views/admin.php';
+      break;
     case "/about":
       require_once __DIR__ . '/views/about.php';
       break;
