@@ -23,12 +23,13 @@
     exit();
   }
 
-  $path = $_SERVER['REQUEST_URI'];
   $subdomain = (count($domain) == 2 || $domain[0] == "www") ? "" : $domain[0];
+  [$path, $query] = explode("?", preg_replace("/^\//", "", $_SERVER['REQUEST_URI']));
 
   // echo var_dump($domain) . "</br>";
-  // echo "path: $path</br>";
   // echo "subdomain: $subdomain</br>";
+  // echo "path: $path</br>";
+  // echo "query: $query</br>";
 
   try {
     $servername = "db";
@@ -49,16 +50,15 @@
 
   switch ($path) {
     case "":
-    case "/":
       require_once __DIR__ . '/views/index.php';
       break;
-    case "/admin":
+    case "admin":
       require_once __DIR__ . '/views/admin.php';
       break;
-    case "/login":
+    case "login":
       require_once __DIR__ . '/views/login.php';
       break;
-    case "/about":
+    case "about":
       require_once __DIR__ . '/views/about.php';
       break;
     default:
