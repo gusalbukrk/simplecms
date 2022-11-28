@@ -1,3 +1,5 @@
+<?php session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +12,9 @@
 
 <body>
   <?php
+
+  require_once __DIR__ . "/utils.php";
+
   $domain = explode(".", $_SERVER['HTTP_HOST']);
 
   // allow only one subdomain level
@@ -18,11 +23,12 @@
     exit();
   }
 
-  echo var_dump($domain) . "</br>";
   $path = $_SERVER['REQUEST_URI'];
   $subdomain = (count($domain) == 2 || $domain[0] == "www") ? "" : $domain[0];
-  echo "path: $path</br>";
-  echo "subdomain: $subdomain</br>";
+
+  // echo var_dump($domain) . "</br>";
+  // echo "path: $path</br>";
+  // echo "subdomain: $subdomain</br>";
 
   try {
     $servername = "db";
@@ -36,7 +42,7 @@
 
     $conn = new PDO("mysql:host=$servername;port=$port", $username, $password, $options);
 
-    echo "Connected successfully</br>";
+    // echo "Connected successfully</br>";
   } catch (PDOException $e) {
     echo "<b>Couldn't connect to MySQL</b>: " . $e->getMessage();
   }
@@ -48,6 +54,9 @@
       break;
     case "/admin":
       require_once __DIR__ . '/views/admin.php';
+      break;
+    case "/login":
+      require_once __DIR__ . '/views/login.php';
       break;
     case "/about":
       require_once __DIR__ . '/views/about.php';
