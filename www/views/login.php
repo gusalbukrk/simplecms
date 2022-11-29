@@ -1,5 +1,11 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require 'vendor/autoload.php';
+
 if (isset($_SESSION['user'])) {
   redirect("admin");
 }
@@ -27,9 +33,29 @@ if ($_POST["action"] == "Log in") {
 }
 
 if ($_POST["action"] == "Reset password") {
-  $success = mail($_POST["email"], "Reset password", "New password: kfdsi@3i");
+  $mail = new PHPMailer();
 
-  echo $success ? 'sent' : 'not sent';
+  $mail->isSMTP();
+  $mail->Host = "smtp.office365.com";
+  $mail->Port = 587;
+  $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+  $mail->SMTPAuth = true;
+
+  $mail->Username = "simplecms@outlook.com";
+  $mail->Password = "Tq8oT%ER";
+
+  $mail->setFrom("simplecms@outlook.com", "simpleCMS");
+  $mail->addAddress("gusalbukrk@gmail.com");
+  $mail->Subject = "simpleCMS - Your new password";
+  $mail->Body = "This is the HTML message body <b>in bold!</b>";
+  $mail->AltBody = "This is the body in plain text for non-HTML mail clients";
+
+  //send the message, check for errors
+  if (!$mail->send()) {
+    echo "Mailer Error: " . $mail->ErrorInfo;
+  } else {
+    echo "Message sent!\n";
+  }
 }
 ?>
 
