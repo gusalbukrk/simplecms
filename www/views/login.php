@@ -9,35 +9,35 @@ if ($_POST["action"] == "Log in") {
   $password = $_POST["password"];
 
   try {
-    $stmt = $conn->prepare("SELECT * FROM simplecms.users WHERE email = ?");
-    $stmt->execute([$email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user = get_user($email);
 
-    $verify = password_verify($password, $user["password"]);
-
-    if ($verify) {
+    if (password_verify($password, $user["password"])) {
       $_SESSION["user"] = $email;
       redirect("admin");
     } else {
       echo "Wrong password";
     }
   } catch (PDOException $e) {
-    echo "<b>Couldn't fetch databases</b>: " . $e->getMessage();
+    echo "<b>Couldn't fetch user</b>: " . $e->getMessage();
   }
 }
 
 if ($_POST["action"] == "Reset password") {
-  $success = send_email(
-    $_POST["email"],
-    "Your new password",
-    "<code>" . generate_password() . "</code>",
-    generate_password(),
-  );
+  $email = $_POST["email"];
 
-  if ($success) {
-    echo "Message sent!\n";
+  $user = get_user($email); // false if user not found
+
+  if ($user) {
+    $sent = send_email(
+      $email,
+      "Your new password",
+      "<code>" . generate_password() . "</code>",
+      generate_password(),
+    );
+
+    echo $sent ? "Email sent!\n" : "Mailer error: " . $mail->ErrorInfo;
   } else {
-    echo "Mailer Error: " . $mail->ErrorInfo;
+    echo "User not found.\n";
   }
 }
 ?>

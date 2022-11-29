@@ -48,3 +48,14 @@ function send_email($to, $subject, $body, $alt)
 
   return $mail->send();
 }
+
+function get_user($email)
+{
+  global $conn;
+
+  $stmt = $conn->prepare("SELECT * FROM simplecms.users WHERE email = ?");
+  $stmt->execute([$email]);
+  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+  return $user;
+}
