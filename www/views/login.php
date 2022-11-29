@@ -33,24 +33,24 @@ if ($_POST["action"] == "Log in") {
 }
 
 if ($_POST["action"] == "Reset password") {
+  // https://www.smtp2go.com/setupguide/php_mailer/
   $mail = new PHPMailer();
 
   $mail->isSMTP();
-  $mail->Host = "smtp.office365.com";
-  $mail->Port = 587;
-  $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+  $mail->Host = "mail.smtp2go.com";
+  $mail->Port = "2525";
   $mail->SMTPAuth = true;
+  $mail->SMTPSecure = "tls";
 
-  $mail->Username = "simplecms@outlook.com";
-  $mail->Password = "Tq8oT%ER";
+  $mail->Username = "simplecms";
+  $mail->Password = "kp%@NcBWZRm547CR";
 
-  $mail->setFrom("simplecms@outlook.com", "simpleCMS");
-  $mail->addAddress("gusalbukrk@gmail.com");
-  $mail->Subject = "simpleCMS - Your new password";
+  $mail->setFrom("admin@simplecms.site", "simpleCMS");
+  $mail->addAddress($_POST["email"]);
+  $mail->Subject = "Your new password";
   $mail->Body = "This is the HTML message body <b>in bold!</b>";
   $mail->AltBody = "This is the body in plain text for non-HTML mail clients";
 
-  //send the message, check for errors
   if (!$mail->send()) {
     echo "Mailer Error: " . $mail->ErrorInfo;
   } else {
