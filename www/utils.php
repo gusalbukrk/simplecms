@@ -59,3 +59,12 @@ function get_user($email)
 
   return $user;
 }
+
+function update_password($email, $password)
+{
+  global $conn;
+
+  $stmt = $conn->prepare("UPDATE simplecms.users SET password = ? WHERE email = ?");
+  $stmt->execute([password_hash($password, PASSWORD_DEFAULT), $email]);
+  $stmt->rowCount();
+}

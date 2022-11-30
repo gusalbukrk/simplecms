@@ -25,17 +25,20 @@ if ($_POST["action"] == "Log in") {
 if ($_POST["action"] == "Reset password") {
   $email = $_POST["email"];
 
-  $user = get_user($email); // false if user not found
+  if (get_user($email)) { // false if user not found
+    $password = generate_password();
 
-  if ($user) {
+    update_password($email, $password);
+
     $sent = send_email(
       $email,
       "Your new password",
-      "<code>" . generate_password() . "</code>",
-      generate_password(),
+      "<code>$password</code>",
+      $password,
     );
 
-    echo $sent ? "Email sent!\n" : "Mailer error: " . $mail->ErrorInfo;
+    if ($sent) redirect("login");
+    echo "Mailer error.\n";
   } else {
     echo "User not found.\n";
   }
