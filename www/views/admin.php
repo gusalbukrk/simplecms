@@ -1,6 +1,11 @@
 <?php
 if (isset($_POST["logout"])) {
   unset($_SESSION["user"]);
+  redirect("/");
+}
+
+if (!isset($_SESSION["user"])) {
+  redirect("login");
 }
 ?>
 
