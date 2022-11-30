@@ -19,16 +19,16 @@ session_start();
 <body>
   <?php
 
-  $domain = explode(".", $_SERVER['HTTP_HOST']);
+  $domain = explode(".", $_SERVER["HTTP_HOST"]);
 
   // allow only one subdomain level
   if (count($domain) > 3) {
-    require_once __DIR__ . '/views/404.php';
+    require_once __DIR__ . "/views/404.php";
     exit();
   }
 
   $subdomain = (count($domain) == 2 || $domain[0] == "www") ? "" : $domain[0];
-  [$path, $query] = explode("?", preg_replace("/^\//", "", $_SERVER['REQUEST_URI']));
+  [$path, $query] = explode("?", preg_replace("/^\//", "", $_SERVER["REQUEST_URI"]));
 
   // echo var_dump($domain) . "</br>";
   // echo "subdomain: $subdomain</br>";
@@ -54,20 +54,20 @@ session_start();
 
   switch ($path) {
     case "":
-      require_once __DIR__ . '/views/index.php';
+      require_once __DIR__ . "/views/index.php";
       break;
     case "admin":
-      require_once __DIR__ . '/views/admin.php';
+      require_once __DIR__ . "/views/admin.php";
       break;
     case "login":
-      require_once __DIR__ . '/views/login.php';
+      require_once __DIR__ . "/views/login.php";
       break;
     case "about":
-      require_once __DIR__ . '/views/about.php';
+      require_once __DIR__ . "/views/about.php";
       break;
     default:
       http_response_code(404);
-      require_once __DIR__ . '/views/404.php';
+      require_once __DIR__ . "/views/404.php";
   }
 
   $conn = null;

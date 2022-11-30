@@ -26,7 +26,7 @@ use PHPMailer\PHPMailer\Exception;
 //
 function send_email($to, $subject, $body, $alt)
 {
-  require 'vendor/autoload.php';
+  require "vendor/autoload.php";
 
   // https://www.smtp2go.com/setupguide/php_mailer/
   $mail = new PHPMailer();
@@ -79,7 +79,7 @@ function get_dbs()
   $dbs = [];
 
   try {
-    $stmt = $conn->prepare('SHOW DATABASES');
+    $stmt = $conn->prepare("SHOW DATABASES");
     $stmt->execute();
 
 
@@ -98,7 +98,7 @@ function get_dbs()
 
 function get_tld()
 {
-  // 'online' on dev environment and 'site' on production environment
+  // on dev environment = online; on production environment = site
   return end(explode(".", $_SERVER["HTTP_HOST"]));
 }
 
