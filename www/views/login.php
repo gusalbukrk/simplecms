@@ -1,5 +1,7 @@
 <?php
 
+change_page_title("Login");
+
 if (isset($_SESSION["user"])) {
   redirect("admin");
 }

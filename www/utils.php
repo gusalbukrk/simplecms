@@ -130,3 +130,8 @@ function print_dbs_table()
 
   echo "</table>";
 }
+
+function change_page_title($page)
+{
+  echo "<script> document.title = 'simpleCMS - $page'; </script>";
+}

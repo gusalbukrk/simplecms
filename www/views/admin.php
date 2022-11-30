@@ -1,4 +1,7 @@
 <?php
+
+change_page_title("Admin");
+
 if (isset($_POST["logout"])) {
   unset($_SESSION["user"]);
   redirect("/");
