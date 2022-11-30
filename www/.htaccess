@@ -1,8 +1,6 @@
+# https://www.slashnode.com/articles/devops/2013-12-24-redirect-all-requests-to-index-php
+Options +FollowSymLinks
 RewriteEngine On
-RewriteBase /
-
-# ignore rewrite if there's an existing directory or file that meets the match
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-
-RewriteRule ^(.+)$ index.php [QSA,L]
+RewriteCond %{REQUEST_URI} !=/index.php
+# RewriteCond %{REQUEST_URI} !.*\.js$ [NC] # how to use files other than php
+RewriteRule .* /index.php
