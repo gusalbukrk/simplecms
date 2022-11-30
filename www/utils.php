@@ -69,13 +69,12 @@ function update_password($email, $password)
   $stmt->rowCount();
 }
 
-// return array containing all non-default databases
+// return array containing all databases except defaults & simplecms
 function get_dbs()
 {
   global $conn;
 
-  // every MySQL has following databases by default
-  define("DEFAULT_DBS", ["information_schema", "mysql", "performance_schema", "sys"]);
+  $except = ["information_schema", "mysql", "performance_schema", "sys", "simplecms"];
 
   $dbs = [];
 
@@ -85,7 +84,7 @@ function get_dbs()
 
 
     while (($db = $stmt->fetchColumn()) !== false) {
-      if (!in_array($db, DEFAULT_DBS)) {
+      if (!in_array($db, $except)) {
 
         array_push($dbs, $db);
       }
