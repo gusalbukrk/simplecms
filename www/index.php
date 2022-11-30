@@ -1,4 +1,10 @@
-<?php session_start(); ?>
+<?php
+require_once __DIR__ . "/utils.php";
+
+ini_set("session.cookie_domain", ".simplecms." . get_tld()); // allow session across subdomains
+
+session_start();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,8 +18,6 @@
 
 <body>
   <?php
-
-  require_once __DIR__ . "/utils.php";
 
   $domain = explode(".", $_SERVER['HTTP_HOST']);
 
