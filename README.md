@@ -1,5 +1,5 @@
 # simpleCMS
 
-- `echo 'root' > db_root_password.txt && echo 'admin' > db_password.txt` = create password files (for security's sake, choose different passwords)
-- `docker compose up -d` = run app
+- `./run.sh <password>` = start app
+  - script takes 1 argument — MySQL root user password
 - `docker compose down` = stop app

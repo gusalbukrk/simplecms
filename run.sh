@@ -1,14 +1,25 @@
 #!/bin/bash
 
-# script must receive exactly 2 arguments, otherwise error
-if [[ $# != 2 ]]; then
-  echo "ERROR: Script must receive exactly 2 arguments — root & admin passwords."
+# error if script received no or more than 1 argument
+if [[ $# != 1 ]]; then
+  echo "ERROR: Script must receive exactly 1 argument — MySQL user root password."
   exit 1
 fi
 
-# create password files usign the arguments
+# error if argument doesn't meet the requirements
+if ! [[
+  ${#1} -ge 8 &&
+  $1 =~ [a-z] &&
+  $1 =~ [A-Z] &&
+  $1 =~ [0-9] &&
+  $1 =~ [[:punct:]]
+]]; then
+  echo "ERROR: password minimum length is 8 and it must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 punctuation mark."
+  exit 1
+fi
+
+# create password file using argument supplied to the script
 echo $1 > db_root_password.txt
-echo $2 > db_password.txt
 
 # install PHP dependencies
 cd www

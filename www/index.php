@@ -31,7 +31,7 @@ session_start();
   try {
     $servername = "db";
     $username = "root";
-    $password = "rootpw";
+    $password = "Tq8oT%ER";
     $port = "3306";
 
     $options = [
