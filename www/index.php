@@ -24,7 +24,7 @@ session_start();
   <title>simpleCMS</title>
 </head>
 
-<body>
+<body class="p-3">
   <?php
 
   try {

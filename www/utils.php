@@ -116,7 +116,7 @@ function print_dbs_table()
 {
   global $url;
 
-  echo "<table>";
+  echo "<table class=\"table table-bordered border-secondary\" style=\"width: 200px;\">";
   echo "<tr><th>Database</th></tr>";
 
   $tld = end($url["host"]);

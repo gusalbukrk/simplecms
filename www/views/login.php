@@ -59,9 +59,9 @@ if ($_POST["action"] == "Reset password") {
 <?php endif; ?>
 
 <form method="post">
-  <label>E-mail: <input type="email" name="email" required></label>
-  <label>Password: <input type="password" name="password" required></label>
-  <input type="submit" name="action" value="Log in">
+  <div class="mb-3"><label>E-mail: <input type="email" name="email" required></label></div>
+  <div class="mb-3"><label>Password: <input type="password" name="password" required></label></div>
+  <input type="submit" class="btn btn-primary mb-3" name="action" value="Log in">
 </form>
 
 <a href="login?action=reset-password">Forgot your password?</a>

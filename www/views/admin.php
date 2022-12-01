@@ -15,7 +15,7 @@ if (!isset($_SESSION["user"])) {
 <?php if (isset($_SESSION["user"])) : ?>
   <p><b>user</b>: <?php echo $_SESSION["user"]; ?></p>
 
-  <form method="post">
+  <form method="post" class="mb-3">
     <input type="submit" name="logout" value="Log out">
   </form>
 <?php endif; ?>
