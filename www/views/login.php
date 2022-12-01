@@ -48,20 +48,36 @@ if ($_POST["action"] == "Reset password") {
 ?>
 
 <?php if ($_GET["action"] == "reset-password") : ?>
-  <form method="post">
-    <label>E-mail: <input type="email" name="email" required></label>
-    <input type="submit" name="action" value="Reset password">
+  <form class="container max-w-350" method="post">
+    <div class="row mb-3">
+      <label class="px-0 mb-2 fw-bold" for="email">Email</label>
+      <input type="email" name="email" id="email" required>
+    </div>
+    <div class="row mb-3">
+      <input class="btn btn-primary" type="submit" name="action" value="Reset password">
+    </div>
+    <p class="row text-end">
+      <a class="px-0" href="login">Log in</a>
+    </p>
   </form>
 
-  <a href="login">Log in</a>
-
   <?php exit(); ?>
+
 <?php endif; ?>
 
-<form method="post">
-  <div class="mb-3"><label>E-mail: <input type="email" name="email" required></label></div>
-  <div class="mb-3"><label>Password: <input type="password" name="password" required></label></div>
-  <input type="submit" class="btn btn-primary mb-3" name="action" value="Log in">
+<form class="container max-w-350" method="post">
+  <div class="row mb-3">
+    <label class="px-0 mb-2 fw-bold" for="email">Email</label>
+    <input type="email" name="email" id="email" required>
+  </div>
+  <div class="row mb-3">
+    <label class="px-0 mb-2 fw-bold" for="password">Password</label>
+    <input type="password" name="password" id="password" required>
+  </div>
+  <div class="row mb-3">
+    <input class="btn btn-primary" type="submit" name="action" value="Log in">
+  </div>
+  <p class="row text-end">
+    <a class="px-0" href="login?action=reset-password">Forgot your password?</a>
+  </p>
 </form>
-
-<a href="login?action=reset-password">Forgot your password?</a>
