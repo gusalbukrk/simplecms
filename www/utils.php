@@ -96,17 +96,13 @@ function get_dbs()
   return $dbs;
 }
 
-function get_tld()
-{
-  // on dev environment = online; on production environment = site
-  return end(explode(".", $_SERVER["HTTP_HOST"]));
-}
-
 function print_dbs_list()
 {
+  global $url;
+
   echo "<ul>";
 
-  $tld = get_tld();
+  $tld = end($url["host"]);
 
   $dbs = get_dbs();
   foreach ($dbs as $db) {
@@ -118,10 +114,12 @@ function print_dbs_list()
 
 function print_dbs_table()
 {
+  global $url;
+
   echo "<table>";
   echo "<tr><th>Database</th></tr>";
 
-  $tld = get_tld();
+  $tld = end($url["host"]);
 
   $dbs = get_dbs();
   foreach ($dbs as $db) {
@@ -134,4 +132,18 @@ function print_dbs_table()
 function change_page_title($page)
 {
   echo "<script> document.title = 'simpleCMS - $page'; </script>";
+}
+
+function get_current_url()
+{
+  $url = parse_url(
+    (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") .
+      "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"
+  );
+
+  $url["path"] = preg_replace("/^\//", "", $url["path"]); // remove leading slash from path
+  $url["host"] = explode(".", $url["host"]);
+  parse_str($url["query"], $url["parameters"]); // breakdown query string into array of parameters
+
+  return $url;
 }

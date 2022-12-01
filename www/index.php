@@ -1,8 +1,15 @@
 <?php
 require_once __DIR__ . "/utils.php";
 
-ini_set("session.cookie_domain", ".simplecms." . get_tld()); // allow session across subdomains
+$url = get_current_url();
 
+// allow only one subdomain level is allowed
+if (count($url["host"]) > 3) {
+  require_once __DIR__ . "/views/404.php";
+  exit();
+}
+
+ini_set("session.cookie_domain", ".simplecms." . end($url["host"])); // allow session across subdomains
 session_start();
 ?>
 
@@ -18,22 +25,6 @@ session_start();
 
 <body>
   <?php
-
-  $domain = explode(".", $_SERVER["HTTP_HOST"]);
-
-  // allow only one subdomain level
-  if (count($domain) > 3) {
-    require_once __DIR__ . "/views/404.php";
-    exit();
-  }
-
-  $subdomain = (count($domain) == 2 || $domain[0] == "www") ? "" : $domain[0];
-  [$path, $query] = explode("?", preg_replace("/^\//", "", $_SERVER["REQUEST_URI"]));
-
-  // echo var_dump($domain) . "</br>";
-  // echo "subdomain: $subdomain</br>";
-  // echo "path: $path</br>";
-  // echo "query: $query</br>";
 
   try {
     $servername = "db";
@@ -52,7 +43,7 @@ session_start();
     echo "<b>Couldn't connect to MySQL</b>: " . $e->getMessage();
   }
 
-  switch ($path) {
+  switch ($url["path"]) {
     case "":
       require_once __DIR__ . "/views/index.php";
       break;
