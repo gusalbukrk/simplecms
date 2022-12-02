@@ -14,6 +14,8 @@ services:
       - ./sites-available:/etc/apache2/sites-available
       - ./logs:/var/log/apache2/
       - /etc/letsencrypt/:/etc/letsencrypt/
+    secrets:
+      - db_root_password
 
   db:
     container_name: db

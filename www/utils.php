@@ -7,6 +7,17 @@ function redirect($url)
   echo "<script> location.replace(\"$url\"); </script>";
 }
 
+function get_db_password()
+{
+  $path = "/run/secrets/db_root_password"; // docker secrets location
+
+  $f = fopen($path, "r");
+  $pw = preg_replace("/\s+$/", "", fread($f, filesize($path))); // remove trailing space if any
+  fclose($f);
+
+  return $pw;
+}
+
 function generate_password()
 {
   $chars = str_split(

@@ -19,7 +19,7 @@ if ! [[
 fi
 
 # create password file using argument supplied to the script
-echo $1 > db_root_password.txt
+echo -n $1 > db_root_password.txt
 
 # install PHP dependencies
 cd www
