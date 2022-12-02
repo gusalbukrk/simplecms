@@ -53,7 +53,7 @@ function get_user($email)
 {
   global $conn;
 
-  $stmt = $conn->prepare("SELECT * FROM simplecms.users WHERE email = ?");
+  $stmt = $conn->prepare("SELECT * FROM simplecms.user WHERE email = ?");
   $stmt->execute([$email]);
   $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -64,7 +64,7 @@ function update_password($email, $password)
 {
   global $conn;
 
-  $stmt = $conn->prepare("UPDATE simplecms.users SET password = ? WHERE email = ?");
+  $stmt = $conn->prepare("UPDATE simplecms.user SET password = ? WHERE email = ?");
   $stmt->execute([password_hash($password, PASSWORD_DEFAULT), $email]);
   $stmt->rowCount();
 }
