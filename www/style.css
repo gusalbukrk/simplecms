@@ -2,6 +2,10 @@ a {
   text-decoration: none;
 }
 
+.btn-close{
+  font-size: .8rem !important;
+}
+
 .max-w-350 {
   max-width: 350px;
 }

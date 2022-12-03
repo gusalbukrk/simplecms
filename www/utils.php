@@ -168,9 +168,8 @@ function create_user($email, $password)
     $stmt->execute([$email, password_hash($password, PASSWORD_DEFAULT)]);
 
     if ($stmt->rowCount() == 1)
-      // echo "<p class=\"alert alert-success\"><b>User created</b></p>";
-      echo "<p class=\"alert alert-success max-w-350 mx-auto mb-4\"><b>User created</b></p>";
+      echo "<p class=\"alert alert-success alert-dismissible fade show max-w-350 mx-auto mb-4\"><b>User created</b><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button></p>";
   } catch (PDOException $e) {
-    echo "<p class=\"alert alert-danger max-w-350 mx-auto mb-4\"><b>Couldn't create user</b>: " . $e->getMessage() . "</p>";
+    echo "<p class=\"alert alert-danger alert-dismissible fade show max-w-350 mx-auto mb-4\"><b>Couldn't create user</b>: " . $e->getMessage() . "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\"></button></p>";
   }
 }

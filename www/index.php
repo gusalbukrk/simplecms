@@ -68,6 +68,7 @@ session_start();
 
   $conn = null;
   ?>
+  <script src="vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
