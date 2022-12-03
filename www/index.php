@@ -55,6 +55,9 @@ session_start();
     case "login":
       require_once __DIR__ . "/views/login.php";
       break;
+    case "signup":
+      require_once __DIR__ . "/views/signup.php";
+      break;
     case "about":
       require_once __DIR__ . "/views/about.php";
       break;

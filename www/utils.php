@@ -158,3 +158,19 @@ function get_current_url()
 
   return $url;
 }
+
+function create_user($email, $password)
+{
+  global $conn;
+
+  try {
+    $stmt = $conn->prepare("INSERT INTO simplecms.user (email, password) VALUES (?, ?)");
+    $stmt->execute([$email, password_hash($password, PASSWORD_DEFAULT)]);
+
+    if ($stmt->rowCount() == 1)
+      // echo "<p class=\"alert alert-success\"><b>User created</b></p>";
+      echo "<p class=\"alert alert-success max-w-350 mx-auto mb-4\"><b>User created</b></p>";
+  } catch (PDOException $e) {
+    echo "<p class=\"alert alert-danger max-w-350 mx-auto mb-4\"><b>Couldn't create user</b>: " . $e->getMessage() . "</p>";
+  }
+}
