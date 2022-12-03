@@ -9,7 +9,7 @@ if (count($url["host"]) > 3) {
   exit();
 }
 
-ini_set("session.cookie_domain", ".simplecms." . end($url["host"])); // allow session across subdomains
+ini_set("session.cookie_domain", ".simpletables." . end($url["host"])); // allow session across subdomains
 session_start();
 ?>
 
@@ -22,7 +22,7 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="style.css">
-  <title>simpleCMS</title>
+  <title>simpletables.xyz</title>
 </head>
 
 <body class="p-3">

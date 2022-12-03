@@ -47,10 +47,10 @@ function send_email($to, $subject, $body, $alt)
   $mail->Port = "2525";
   $mail->SMTPAuth = true;
   $mail->SMTPSecure = "tls";
-  $mail->Username = "simplecms";
+  $mail->Username = "simpletables";
   $mail->Password = "kp%@NcBWZRm547CR";
 
-  $mail->setFrom("admin@simplecms.site", "simpleCMS");
+  $mail->setFrom("admin@simpletables.xyz", "simpletables.xyz");
   $mail->addAddress($to);
 
   $mail->Subject = $subject;
@@ -64,7 +64,7 @@ function get_user($email)
 {
   global $conn;
 
-  $stmt = $conn->prepare("SELECT * FROM simplecms.user WHERE email = ?");
+  $stmt = $conn->prepare("SELECT * FROM simpletables.user WHERE email = ?");
   $stmt->execute([$email]);
   $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -75,17 +75,17 @@ function update_password($email, $password)
 {
   global $conn;
 
-  $stmt = $conn->prepare("UPDATE simplecms.user SET password = ? WHERE email = ?");
+  $stmt = $conn->prepare("UPDATE simpletables.user SET password = ? WHERE email = ?");
   $stmt->execute([password_hash($password, PASSWORD_DEFAULT), $email]);
   $stmt->rowCount();
 }
 
-// return array containing all databases except defaults & simplecms
+// return array containing all databases except defaults & simpletables
 function get_dbs()
 {
   global $conn;
 
-  $except = ["information_schema", "mysql", "performance_schema", "sys", "simplecms"];
+  $except = ["information_schema", "mysql", "performance_schema", "sys", "simpletables"];
 
   $dbs = [];
 
@@ -117,7 +117,7 @@ function print_dbs_list()
 
   $dbs = get_dbs();
   foreach ($dbs as $db) {
-    echo "<li><a href=\"http://$db.simplecms.$tld\">$db</a></li>";
+    echo "<li><a href=\"http://$db.simpletables.$tld\">$db</a></li>";
   }
 
   echo "</ul>";
@@ -134,7 +134,7 @@ function print_dbs_table()
 
   $dbs = get_dbs();
   foreach ($dbs as $db) {
-    echo "<tr><td><a href=\"http://$db.simplecms.$tld/admin\">$db</a></td></tr>";
+    echo "<tr><td><a href=\"http://$db.simpletables.$tld/admin\">$db</a></td></tr>";
   }
 
   echo "</table>";
@@ -142,7 +142,7 @@ function print_dbs_table()
 
 function change_page_title($page)
 {
-  echo "<script> document.title = 'simpleCMS - $page'; </script>";
+  echo "<script> document.title = 'simpletables.xyz - $page'; </script>";
 }
 
 function get_current_url()
@@ -164,7 +164,7 @@ function create_user($email, $password)
   global $conn;
 
   try {
-    $stmt = $conn->prepare("INSERT INTO simplecms.user (email, password) VALUES (?, ?)");
+    $stmt = $conn->prepare("INSERT INTO simpletables.user (email, password) VALUES (?, ?)");
     $stmt->execute([$email, password_hash($password, PASSWORD_DEFAULT)]);
 
     if ($stmt->rowCount() == 1)
