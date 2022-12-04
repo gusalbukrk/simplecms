@@ -21,6 +21,12 @@ fi
 # create password file using argument supplied to the script
 echo -n $1 > db_root_password.txt
 
+# PHP must be installed to run composer
+# usual installation (`sudo apt install php`) has apache as dependency
+# installing apache would not only be pointless but would also take up port 80
+# https://askubuntu.com/a/1357414
+sudo apt install php-fpm php-cli zip unzip php-zip # install php without apache
+
 # install PHP dependencies
 cd www
 php composer.phar install
