@@ -15,7 +15,7 @@ services:
       - ./logs:/var/log/apache2/
       - /etc/letsencrypt/:/etc/letsencrypt/
     secrets:
-      - db_root_password
+      - password
 
   db:
     container_name: db
@@ -24,11 +24,11 @@ services:
     expose:
       - 3306
     environment:
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/password
     volumes:
       - db-data:/var/lib/mysql
     secrets:
-      - db_root_password
+      - password
 
   admin:
     container_name: admin
@@ -43,8 +43,8 @@ services:
       - /etc/letsencrypt/:/etc/letsencrypt/
 
 secrets:
-  db_root_password:
-    file: db_root_password.txt
+  password:
+    file: password.txt
 
 volumes:
   db-data:

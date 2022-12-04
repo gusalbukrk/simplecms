@@ -7,9 +7,10 @@ function redirect($url)
   echo "<script> location.replace(\"$url\"); </script>";
 }
 
-function get_db_password()
+// password is used for both MySQL root user & SMTP2GO simpletables user
+function get_password()
 {
-  $path = "/run/secrets/db_root_password"; // docker secrets location
+  $path = "/run/secrets/password"; // docker secrets location
 
   $f = fopen($path, "r");
   $pw = preg_replace("/\s+$/", "", fread($f, filesize($path))); // remove trailing space if any
@@ -48,7 +49,7 @@ function send_email($to, $subject, $body, $alt)
   $mail->SMTPAuth = true;
   $mail->SMTPSecure = "tls";
   $mail->Username = "simpletables";
-  $mail->Password = "kp%@NcBWZRm547CR";
+  $mail->Password = get_password();
 
   $mail->setFrom("admin@simpletables.xyz", "simpletables.xyz");
   $mail->addAddress($to);

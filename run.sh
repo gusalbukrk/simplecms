@@ -19,7 +19,7 @@ if ! [[
 fi
 
 # create password file using argument supplied to the script
-echo -n $1 > db_root_password.txt
+echo -n $1 > password.txt
 
 # PHP must be installed to run composer
 # usual installation (`sudo apt install php`) has apache as dependency
