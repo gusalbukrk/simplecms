@@ -11,7 +11,7 @@ services:
       - 443:443
     volumes:
       - ./www:/var/www/html/
-      # - ./sites-available/www/:/etc/apache2/sites-available
+      - ./sites-available/www/:/etc/apache2/sites-available
       - ./logs:/var/log/apache2/
       - /etc/letsencrypt/:/etc/letsencrypt/
     secrets:
@@ -39,7 +39,7 @@ services:
     ports:
       - 82:443
     volumes:
-      # - ./sites-available/admin/:/etc/apache2/sites-available
+      - ./sites-available/admin/:/etc/apache2/sites-available
       - /etc/letsencrypt/:/etc/letsencrypt/
 
 secrets:
