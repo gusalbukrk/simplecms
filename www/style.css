@@ -2,6 +2,10 @@ a {
   text-decoration: none;
 }
 
+header #user {
+  font-size: 1.125rem;
+}
+
 .btn-close{
   font-size: .8rem !important;
 }
