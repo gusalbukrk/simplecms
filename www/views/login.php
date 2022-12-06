@@ -11,6 +11,6 @@
     <input class="btn btn-primary" type="submit" name="action" value="Log in">
   </div>
   <p class="row text-end">
-    <a class="px-0" href="reset-password">Forgot your password?</a>
+    <a class="px-0" href="reset-password">Reset password</a>
   </p>
 </form>

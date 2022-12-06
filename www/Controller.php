@@ -41,13 +41,13 @@ class Controller
             $_SESSION["user"] = $email;
             Utils::redirect("/");
           } else {
-            throw new Exception("Wrong password");
+            throw new Exception("wrong password");
           }
         } else {
-          throw new Exception("User doesn't exist");
+          throw new Exception("user doesn't exist");
         }
       } catch (Exception $e) {
-        echo "<b>Couldn't fetch user</b>: " . $e->getMessage();
+        exit("<b>Couldn't log in</b>: " . $e->getMessage());
       }
     }
   }
@@ -60,6 +60,42 @@ class Controller
   public function reset_password()
   {
     $this->view->reset_password();
+
+    // must be placed after view otherwise session wouldn't yet have been started
+    if (isset($_SESSION["user"])) Utils::redirect("/");
+
+    if ($_POST["action"] == "Reset password") {
+      $email = $_POST["email"];
+
+      try {
+        $user = $this->model->get_user_by_email($email);
+
+        if (is_null($user)) throw new Exception("user doesn't exist");
+      } catch (Exception $e) {
+        exit("<b>Couldn't fetch user</b>: " . $e->getMessage() . ".");
+      }
+
+      try {
+        $password = Utils::generate_password();
+
+        if (
+          !$this->model->update_user_password($email, $password)
+        ) throw new Exception("update failed");
+      } catch (Exception $e) {
+        exit("<b>Couldn't update user's password</b>: " . $e->getMessage() . ".");
+      }
+
+      // send email containing new password
+      $sent = Utils::send_email(
+        $email,
+        "Your new password",
+        "<code>$password</code>",
+        $password,
+      );
+
+      if ($sent) Utils::redirect("login");
+      exit("Couldn't send email.");
+    }
   }
 
   public function database()

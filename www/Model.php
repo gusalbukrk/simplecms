@@ -24,6 +24,7 @@ class Model
     }
   }
 
+  // return user found or null if no user found
   function get_user_by_email($email)
   {
     $stmt = $this->conn->prepare("SELECT * FROM simpletables.user WHERE email = ?");
@@ -31,5 +32,12 @@ class Model
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     return $user === false ? null : $user;
+  }
+
+  // return true if user was updated, false otherwise
+  function update_user_password($email, $password)
+  {
+    $stmt = $this->conn->prepare("UPDATE simpletables.user SET password = ? WHERE email = ?");
+    return $stmt->execute([password_hash($password, PASSWORD_DEFAULT), $email]);
   }
 }
