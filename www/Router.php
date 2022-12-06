@@ -42,10 +42,10 @@ class Router
     $route = $this->match();
     $fn = preg_replace("/-/", "_", $route["name"]); // replace slash with underline
 
-    if (is_null($route) || !is_callable([$controller, $fn])) {
-      $controller->page_not_found();
-    } else {
+    if (!is_null($route) || is_callable([$controller, $fn])) {
       $controller->{$fn}();
+    } else {
+      $controller->page_not_found();
     }
   }
 }

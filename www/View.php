@@ -1,5 +1,6 @@
 <?php
 
+// every function inside view is called by a controller method of the same name
 class View
 {
 
@@ -23,6 +24,11 @@ class View
   protected function login()
   {
     require_once __DIR__ . "/views/login.php";
+  }
+
+  protected function logout()
+  {
+    require_once __DIR__ . "/views/logout.php";
   }
 
   protected function reset_password()

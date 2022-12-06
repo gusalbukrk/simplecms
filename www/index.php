@@ -5,8 +5,9 @@ require_once __DIR__ . "/Router.php";
 $router = new Router();
 
 $router->add("home", NULL, NULL);
-$router->add("login", NULL, "login");
 $router->add("signup", NULL, "signup");
+$router->add("login", NULL, "login");
+$router->add("logout", NULL, "logout");
 $router->add("reset-password", NULL, "reset-password");
 $router->add("database", "*", NULL);
 $router->add("table", "*", "[\w-]+(?:\?(?<parameters>(?:[\w-]+=[\w-]+&?)+))?");

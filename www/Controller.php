@@ -72,6 +72,15 @@ class Controller
     }
   }
 
+  public function logout()
+  {
+    $this->view->logout();
+
+    if (isset($_SESSION["user"])) session_unset();
+
+    Utils::redirect("/");
+  }
+
   public function reset_password()
   {
     $this->view->reset_password();
