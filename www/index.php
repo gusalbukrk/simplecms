@@ -4,17 +4,13 @@ require_once __DIR__ . "/Router.php";
 
 $router = new Router();
 
-$router->add("home", NULL, NULL);
-$router->add("signup", NULL, "signup");
-$router->add("login", NULL, "login");
-$router->add("logout", NULL, "logout");
-$router->add("reset-password", NULL, "reset-password");
-$router->add("database", "*", NULL);
-$router->add("table", "*", "[\w-]+(?:\?(?<parameters>(?:[\w-]+=[\w-]+&?)+))?");
+$router->add("core", "home", NULL, NULL);
+$router->add("core", "database", "*", NULL);
+$router->add("core", "table", "*", "[\w-]+(?:\?(?<parameters>(?:[\w-]+=[\w-]+&?)+))?");
+//
+$router->add("user", "signup", NULL, "signup");
+$router->add("user", "login", NULL, "login");
+$router->add("user", "logout", NULL, "logout");
+$router->add("user", "reset-password", NULL, "reset-password");
 
-// echo "<pre>";
-// print_r($router->get_routes());
-// echo "</pre>";
-
-// $router->match();
 $router->dispatch();
