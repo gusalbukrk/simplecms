@@ -22,6 +22,26 @@ class Controller
     $this->view->home();
   }
 
+  public function signup()
+  {
+    $this->view->signup();
+
+    // must be placed after view otherwise session wouldn't yet have been started
+    if (isset($_SESSION["user"])) Utils::redirect("/");
+
+    if ($_POST["action"] == "Sign up") {
+      $email = $_POST["email"];
+      $password = $_POST["password"];
+
+      try {
+        if ($this->model->create_user($email, $password)) Utils::redirect("/");
+        throw new Exception("user creation failed");
+      } catch (Exception $e) {
+        exit("<b>Couldn't sign up</b>: " . $e->getMessage() . ".");
+      }
+    }
+  }
+
   public function login()
   {
     $this->view->login();
@@ -44,17 +64,12 @@ class Controller
             throw new Exception("wrong password");
           }
         } else {
-          throw new Exception("user doesn't exist");
+          throw new Exception("user not found");
         }
       } catch (Exception $e) {
         exit("<b>Couldn't log in</b>: " . $e->getMessage());
       }
     }
-  }
-
-  public function signup()
-  {
-    $this->view->signup();
   }
 
   public function reset_password()
@@ -70,7 +85,7 @@ class Controller
       try {
         $user = $this->model->get_user_by_email($email);
 
-        if (is_null($user)) throw new Exception("user doesn't exist");
+        if (is_null($user)) throw new Exception("user not found");
       } catch (Exception $e) {
         exit("<b>Couldn't fetch user</b>: " . $e->getMessage() . ".");
       }

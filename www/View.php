@@ -15,14 +15,14 @@ class View
     require_once __DIR__ . "/views/home.php";
   }
 
-  protected function login()
-  {
-    require_once __DIR__ . "/views/login.php";
-  }
-
   protected function signup()
   {
     require_once __DIR__ . "/views/signup.php";
+  }
+
+  protected function login()
+  {
+    require_once __DIR__ . "/views/login.php";
   }
 
   protected function reset_password()
