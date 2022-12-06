@@ -2,10 +2,17 @@
 
 require_once __DIR__ . "/BaseController.php";
 
-require_once __DIR__ . "/../View/View.php";
+require_once __DIR__ . "/../Model/Model.php";
+require_once __DIR__ . "/../View/UserView.php";
 
 class UserController extends BaseController
 {
+  public function __construct()
+  {
+    $this->model = new Model();
+    $this->view = new UserView();
+  }
+
   public function signup()
   {
     $this->view->signup();
