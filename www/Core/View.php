@@ -2,7 +2,8 @@
 
 namespace Core;
 
-// every function inside view is called by a controller method of the same name
+// every method call on an instance of View is triggered by a
+// Controller method of the same name and it's handled by the `__call` magic method
 class View
 {
   protected $controller;
@@ -19,6 +20,7 @@ class View
     self::render("/../views/not-found.php");
   }
 
+  // load the file $body and wrap it with header and footer
   static private function render($body)
   {
     require_once __DIR__ . "/../views/header.php";

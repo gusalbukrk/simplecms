@@ -1,6 +1,5 @@
 <?php
 
-// TODO: move down Utils require
 require_once __DIR__ . "/Utils.php";
 
 require_once __DIR__ . "/../Table/Controller.php";
@@ -42,6 +41,7 @@ class Router
   public function dispatch()
   {
     $route = $this->match();
+
     $controller_name = ucfirst($route["controller"]) . "\Controller";
     $method = preg_replace("/-/", "_", $route["method"]); // replace slash with underline
 
