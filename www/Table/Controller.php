@@ -2,8 +2,8 @@
 
 require_once __DIR__ . "/../Core/Controller.php";
 
-require_once __DIR__ . "/../Model/TableModel.php";
-require_once __DIR__ . "/../View/TableView.php";
+require_once __DIR__ . "/Model.php";
+require_once __DIR__ . "/View.php";
 
 class TableController extends Controller
 {

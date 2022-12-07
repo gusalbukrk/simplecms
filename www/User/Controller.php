@@ -2,8 +2,8 @@
 
 require_once __DIR__ . "/../Core/Controller.php";
 
-require_once __DIR__ . "/../Model/UserModel.php";
-require_once __DIR__ . "/../View/UserView.php";
+require_once __DIR__ . "/Model.php";
+require_once __DIR__ . "/View.php";
 
 class UserController extends Controller
 {
