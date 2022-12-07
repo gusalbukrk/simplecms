@@ -23,10 +23,12 @@ class Controller extends \Core\Controller
   public function database()
   {
     $this->view->database();
+    // \Utils::change_page_title("Database");
   }
 
   public function table()
   {
     $this->view->table();
+    // \Utils::change_page_title("Table");
   }
 }

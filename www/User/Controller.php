@@ -18,6 +18,7 @@ class Controller extends \Core\Controller
   public function signup()
   {
     $this->view->signup();
+    \Utils::change_page_title("Sign up");
 
     // must be placed after view otherwise session wouldn't yet have been started
     if (isset($_SESSION["user"])) \Utils::redirect("/");
@@ -38,6 +39,7 @@ class Controller extends \Core\Controller
   public function login()
   {
     $this->view->login();
+    \Utils::change_page_title("Log in");
 
     // must be placed after view otherwise session wouldn't yet have been started
     if (isset($_SESSION["user"])) \Utils::redirect("/");
@@ -68,6 +70,7 @@ class Controller extends \Core\Controller
   public function logout()
   {
     $this->view->logout();
+    \Utils::change_page_title("Log out");
 
     if (isset($_SESSION["user"])) session_unset();
 
@@ -77,6 +80,7 @@ class Controller extends \Core\Controller
   public function reset_password()
   {
     $this->view->reset_password();
+    \Utils::change_page_title("Reset password");
 
     // must be placed after view otherwise session wouldn't yet have been started
     if (isset($_SESSION["user"])) \Utils::redirect("/");

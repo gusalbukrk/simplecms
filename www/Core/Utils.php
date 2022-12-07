@@ -17,10 +17,16 @@ class Utils
     return $pw;
   }
 
-  // written in JavaScript to avoid "header already sent error"
+  // both functions are written in JavaScript to circumvent PHP's "header already sent" error
   public static function redirect($url)
   {
     echo "<script> location.replace(\"$url\"); </script>";
+  }
+  //
+  public static function change_page_title($page)
+  {
+    echo "<script> document.title = '$page · simpletables.xyz'; </script>";
+    // echo "<script> document.title = 'simpletables.xyz · $page'; </script>";
   }
 
   // generate random password

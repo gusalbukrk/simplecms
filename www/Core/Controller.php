@@ -13,5 +13,6 @@ abstract class Controller
   static function not_found()
   {
     View::not_found();
+    \Utils::change_page_title("Not found");
   }
 }
