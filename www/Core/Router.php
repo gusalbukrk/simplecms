@@ -3,8 +3,6 @@
 // TODO: move down Utils require
 require_once __DIR__ . "/Utils.php";
 
-// require_once __DIR__ . "/../Controller/TableController.php";
-// require_once __DIR__ . "/../Controller/UserController.php";
 require_once __DIR__ . "/../Table/Controller.php";
 require_once __DIR__ . "/../User/Controller.php";
 
@@ -54,7 +52,7 @@ class Router
     ) {
       $controller->{$method}();
     } else {
-      Core\Controller::page_not_found();
+      Core\Controller::not_found();
     }
   }
 }

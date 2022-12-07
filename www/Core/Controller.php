@@ -10,10 +10,8 @@ abstract class Controller
 
   abstract public function __construct();
 
-  static function page_not_found()
+  static function not_found()
   {
-    // TODO: create view
-    // $this->view->page_not_found();
-    echo "404 - PAGE NOT FOUND";
+    View::not_found();
   }
 }
