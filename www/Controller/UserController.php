@@ -2,14 +2,14 @@
 
 require_once __DIR__ . "/BaseController.php";
 
-require_once __DIR__ . "/../Model/Model.php";
+require_once __DIR__ . "/../Model/UserModel.php";
 require_once __DIR__ . "/../View/UserView.php";
 
 class UserController extends BaseController
 {
   public function __construct()
   {
-    $this->model = new Model();
+    $this->model = new UserModel();
     $this->view = new UserView();
   }
 
@@ -25,7 +25,7 @@ class UserController extends BaseController
       $password = $_POST["password"];
 
       try {
-        if ($this->model->create_user($email, $password)) Utils::redirect("/");
+        if ($this->model->create($email, $password)) Utils::redirect("/");
         throw new Exception("user creation failed");
       } catch (Exception $e) {
         exit("<b>Couldn't sign up</b>: " . $e->getMessage() . ".");
@@ -45,7 +45,7 @@ class UserController extends BaseController
       $password = $_POST["password"];
 
       try {
-        $user = $this->model->get_user_by_email($email);
+        $user = $this->model->get($email);
 
         if (isset($user)) {
           if (password_verify($password, $user["password"])) {
@@ -83,7 +83,7 @@ class UserController extends BaseController
       $email = $_POST["email"];
 
       try {
-        $user = $this->model->get_user_by_email($email);
+        $user = $this->model->get($email);
 
         if (is_null($user)) throw new Exception("user not found");
       } catch (Exception $e) {
@@ -94,7 +94,7 @@ class UserController extends BaseController
         $password = Utils::generate_password();
 
         if (
-          !$this->model->update_user_password($email, $password)
+          !$this->model->update($email, $password)
         ) throw new Exception("update failed");
       } catch (Exception $e) {
         exit("<b>Couldn't update user's password</b>: " . $e->getMessage() . ".");

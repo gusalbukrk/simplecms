@@ -25,7 +25,7 @@ class Model
   }
 
   // return user found or null if no user found
-  function get_user_by_email($email)
+  function get($email)
   {
     $stmt = $this->conn->prepare("SELECT * FROM simpletables.user WHERE email = ?");
     $stmt->execute([$email]);
@@ -35,13 +35,13 @@ class Model
   }
 
   // return true if user was updated, false otherwise
-  function update_user_password($email, $password)
+  function update($email, $password)
   {
     $stmt = $this->conn->prepare("UPDATE simpletables.user SET password = ? WHERE email = ?");
     return $stmt->execute([password_hash($password, PASSWORD_DEFAULT), $email]);
   }
 
-  function create_user($email, $password)
+  function create($email, $password)
   {
     $stmt = $this->conn->prepare("INSERT INTO simpletables.user (email, password) VALUES (?, ?)");
     return $stmt->execute([$email, password_hash($password, PASSWORD_DEFAULT)]);
