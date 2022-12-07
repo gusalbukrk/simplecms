@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . "/BaseModel.php";
+require_once __DIR__ . "/Model.php";
 
-class TableModel extends BaseModel
+class TableModel extends Model
 {
 }

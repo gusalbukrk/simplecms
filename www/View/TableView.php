@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . "/BaseView.php";
+require_once __DIR__ . "/View.php";
 
-class TableView extends BaseView
+class TableView extends View
 {
 }

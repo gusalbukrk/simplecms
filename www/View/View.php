@@ -1,7 +1,7 @@
 <?php
 
 // every function inside view is called by a controller method of the same name
-class BaseView
+class View
 {
   public function __call($method, $args)
   {

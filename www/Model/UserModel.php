@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . "/BaseModel.php";
+require_once __DIR__ . "/Model.php";
 
-class UserModel extends BaseModel
+class UserModel extends Model
 {
   // return true on success, false otherwise
   function create($email, $password)

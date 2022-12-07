@@ -1,11 +1,11 @@
 <?php
 
-require_once __DIR__ . "/BaseController.php";
+require_once __DIR__ . "/Controller.php";
 
 require_once __DIR__ . "/../Model/TableModel.php";
 require_once __DIR__ . "/../View/TableView.php";
 
-class TableController extends BaseController
+class TableController extends Controller
 {
   public function __construct()
   {

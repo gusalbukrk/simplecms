@@ -10,7 +10,7 @@ class Router
 {
   protected $routes = [];
 
-  // get all routes
+  // get routes array
   public function get()
   {
     return $this->routes;
@@ -52,7 +52,7 @@ class Router
     ) {
       $controller->{$method}();
     } else {
-      BaseController::page_not_found();
+      Controller::page_not_found();
     }
   }
 }
