@@ -36,7 +36,7 @@
 
 - until now we used DigitalOcean as the **DNS provider**, however Namecheap offers functionalities DigitalOcean doesn't because of that we'll switch to Namecheap (NOTE: you'll need to switch back to DigitalOcean when it's time to renew the SSL certificate)
   - on DigitalOcean, delete domain
-  - on Namespace, remove DigitalOcean's nameservers by choosing 'Namecheap BasicDNS' and adding the following records:
+  - on Namecheap, remove DigitalOcean's nameservers by choosing 'Namecheap BasicDNS' and adding the following records:
     - type: A record, host: @, value: droplet ip
     - type: A record, host: *, value: droplet ip
 - configure Namecheap to **forward emails** sent to a custom domain address (e.g. `admin@simpletables.xyz`) to a regular email (e.g. `simpletables@outlook.com`) — at 'REDIRECT EMAIL' section add the following record ([source](https://www.namecheap.com/support/knowledgebase/article.aspx/308/2214/how-to-set-up-free-email-forwarding/)):
