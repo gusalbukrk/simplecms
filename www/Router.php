@@ -3,7 +3,7 @@
 // TODO: move down Utils require
 require_once __DIR__ . "/Utils.php";
 
-require_once __DIR__ . "/Controller/CoreController.php";
+require_once __DIR__ . "/Controller/TableController.php";
 require_once __DIR__ . "/Controller/UserController.php";
 
 class Router

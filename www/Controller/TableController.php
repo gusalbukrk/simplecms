@@ -2,15 +2,15 @@
 
 require_once __DIR__ . "/BaseController.php";
 
-require_once __DIR__ . "/../Model/CoreModel.php";
-require_once __DIR__ . "/../View/CoreView.php";
+require_once __DIR__ . "/../Model/TableModel.php";
+require_once __DIR__ . "/../View/TableView.php";
 
-class CoreController extends BaseController
+class TableController extends BaseController
 {
   public function __construct()
   {
-    $this->model = new CoreModel();
-    $this->view = new CoreView();
+    $this->model = new TableModel();
+    $this->view = new TableView();
   }
 
   public function home()

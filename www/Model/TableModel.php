@@ -2,6 +2,6 @@
 
 require_once __DIR__ . "/BaseModel.php";
 
-class CoreModel extends BaseModel
+class TableModel extends BaseModel
 {
 }
