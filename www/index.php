@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/Router.php";
+require_once __DIR__ . "/Core/Router.php";
 
 $router = new Router();
 

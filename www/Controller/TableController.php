@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/Controller.php";
+require_once __DIR__ . "/../Core/Controller.php";
 
 require_once __DIR__ . "/../Model/TableModel.php";
 require_once __DIR__ . "/../View/TableView.php";
