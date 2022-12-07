@@ -1,5 +1,7 @@
 <?php
 
+namespace Core;
+
 class Model
 {
   protected $conn;
@@ -9,17 +11,17 @@ class Model
     try {
       $servername = "db";
       $username = "root";
-      $password = Utils::get_password();
+      $password = \Utils::get_password();
       $port = "3306";
 
       $options = [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
       ];
 
-      $this->conn = new PDO("mysql:host=$servername;port=$port", $username, $password, $options);
+      $this->conn = new \PDO("mysql:host=$servername;port=$port", $username, $password, $options);
 
       // echo "Connected successfully</br>";
-    } catch (PDOException $e) {
+    } catch (\PDOException $e) {
       echo "<b>Couldn't connect to MySQL</b>: " . $e->getMessage();
     }
   }

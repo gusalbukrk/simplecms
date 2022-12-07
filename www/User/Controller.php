@@ -1,16 +1,18 @@
 <?php
 
+namespace User;
+
 require_once __DIR__ . "/../Core/Controller.php";
 
 require_once __DIR__ . "/Model.php";
 require_once __DIR__ . "/View.php";
 
-class UserController extends Controller
+class Controller extends \Core\Controller
 {
   public function __construct()
   {
-    $this->model = new UserModel();
-    $this->view = new UserView();
+    $this->model = new Model();
+    $this->view = new View();
   }
 
   public function signup()
@@ -18,16 +20,16 @@ class UserController extends Controller
     $this->view->signup();
 
     // must be placed after view otherwise session wouldn't yet have been started
-    if (isset($_SESSION["user"])) Utils::redirect("/");
+    if (isset($_SESSION["user"])) \Utils::redirect("/");
 
     if ($_POST["action"] == "Sign up") {
       $email = $_POST["email"];
       $password = $_POST["password"];
 
       try {
-        if ($this->model->create($email, $password)) Utils::redirect("/");
-        throw new Exception("user creation failed");
-      } catch (Exception $e) {
+        if ($this->model->create($email, $password)) \Utils::redirect("/");
+        throw new \Exception("user creation failed");
+      } catch (\Exception $e) {
         exit("<b>Couldn't sign up</b>: " . $e->getMessage() . ".");
       }
     }
@@ -38,7 +40,7 @@ class UserController extends Controller
     $this->view->login();
 
     // must be placed after view otherwise session wouldn't yet have been started
-    if (isset($_SESSION["user"])) Utils::redirect("/");
+    if (isset($_SESSION["user"])) \Utils::redirect("/");
 
     if ($_POST["action"] == "Log in") {
       $email = $_POST["email"];
@@ -50,14 +52,14 @@ class UserController extends Controller
         if (isset($user)) {
           if (password_verify($password, $user["password"])) {
             $_SESSION["user"] = $email;
-            Utils::redirect("/");
+            \Utils::redirect("/");
           } else {
-            throw new Exception("wrong password");
+            throw new \Exception("wrong password");
           }
         } else {
-          throw new Exception("user not found");
+          throw new \Exception("user not found");
         }
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
         exit("<b>Couldn't log in</b>: " . $e->getMessage());
       }
     }
@@ -69,7 +71,7 @@ class UserController extends Controller
 
     if (isset($_SESSION["user"])) session_unset();
 
-    Utils::redirect("/");
+    \Utils::redirect("/");
   }
 
   public function reset_password()
@@ -77,7 +79,7 @@ class UserController extends Controller
     $this->view->reset_password();
 
     // must be placed after view otherwise session wouldn't yet have been started
-    if (isset($_SESSION["user"])) Utils::redirect("/");
+    if (isset($_SESSION["user"])) \Utils::redirect("/");
 
     if ($_POST["action"] == "Reset password") {
       $email = $_POST["email"];
@@ -85,30 +87,30 @@ class UserController extends Controller
       try {
         $user = $this->model->get($email);
 
-        if (is_null($user)) throw new Exception("user not found");
-      } catch (Exception $e) {
+        if (is_null($user)) throw new \Exception("user not found");
+      } catch (\Exception $e) {
         exit("<b>Couldn't fetch user</b>: " . $e->getMessage() . ".");
       }
 
       try {
-        $password = Utils::generate_password();
+        $password = \Utils::generate_password();
 
         if (
           !$this->model->update($email, $password)
-        ) throw new Exception("update failed");
-      } catch (Exception $e) {
+        ) throw new \Exception("update failed");
+      } catch (\Exception $e) {
         exit("<b>Couldn't update user's password</b>: " . $e->getMessage() . ".");
       }
 
       // send email containing new password
-      $sent = Utils::send_email(
+      $sent = \Utils::send_email(
         $email,
         "Your new password",
         "<code>$password</code>",
         $password,
       );
 
-      if ($sent) Utils::redirect("login");
+      if ($sent) \Utils::redirect("login");
       exit("Couldn't send email.");
     }
   }

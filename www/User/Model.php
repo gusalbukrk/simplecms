@@ -1,8 +1,10 @@
 <?php
 
+namespace User;
+
 require_once __DIR__ . "/../Core/Model.php";
 
-class UserModel extends Model
+class Model extends \Core\Model
 {
   // return true on success, false otherwise
   function create($email, $password)
@@ -16,7 +18,7 @@ class UserModel extends Model
   {
     $stmt = $this->conn->prepare("SELECT * FROM simpletables.user WHERE email = ?");
     $stmt->execute([$email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
     return $user === false ? null : $user;
   }

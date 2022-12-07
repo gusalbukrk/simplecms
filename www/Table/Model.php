@@ -1,7 +1,9 @@
 <?php
 
+namespace Table;
+
 require_once __DIR__ . "/../Core/Model.php";
 
-class TableModel extends Model
+class Model extends \Core\Model
 {
 }

@@ -44,7 +44,7 @@ class Router
   public function dispatch()
   {
     $route = $this->match();
-    $controller_name = ucfirst($route["controller"]) . "Controller";
+    $controller_name = ucfirst($route["controller"]) . "\Controller";
     $method = preg_replace("/-/", "_", $route["method"]); // replace slash with underline
 
     if (
@@ -54,7 +54,7 @@ class Router
     ) {
       $controller->{$method}();
     } else {
-      Controller::page_not_found();
+      Core\Controller::page_not_found();
     }
   }
 }

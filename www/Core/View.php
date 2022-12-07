@@ -1,5 +1,7 @@
 <?php
 
+namespace Core;
+
 // every function inside view is called by a controller method of the same name
 class View
 {

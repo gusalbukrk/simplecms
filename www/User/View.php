@@ -1,7 +1,9 @@
 <?php
 
+namespace User;
+
 require_once __DIR__ . "/../Core/View.php";
 
-class UserView extends View
+class View extends \Core\View
 {
 }
