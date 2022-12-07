@@ -19,14 +19,13 @@ session_start();
   <header class="d-flex justify-content-between align-items-center mb-5">
     <h1 class="fs-3 mb-0 flex-grow-1"><a class="text-dark" href="https://simpletables.xyz">simpletables.xyz</a></h1>
     <div class="flex-grow-1 text-end">
-      <?php
-      if (isset($_SESSION["user"])) {
-        echo "<span id=\"user\" class=\"me-4\">{$_SESSION["user"]}</span>";
-        echo "<a class=\"fs-5 fw-bold\" href=\"/logout\">Log out</a>";
-      } else {
-        echo "<a class=\"fs-5 me-4 fw-bold\" href=\"/login\">Log in</a>";
-        echo "<a class=\"fs-5 fw-bold\" href=\"/signup\">Sign up</a>";
-      }
-      ?>
+      <!-- using absolute instead of relative links because of subdomains -->
+      <? if (isset($_SESSION["user"])) : ?>
+        <span id="user" class="me-4"><?= $_SESSION["user"] ?></span>
+        <a class="fs-5 fw-bold" href="https://simpletables.xyz/logout">Log out</a>
+      <? else : ?>
+        <a class="fs-5 me-4 fw-bold" href="https://simpletables.xyz/login">Log in</a>
+        <a class="fs-5 fw-bold" href="https://simpletables.xyz/signup">Sign up</a>
+      <? endif; ?>
     </div>
   </header>
