@@ -22,13 +22,13 @@ class Controller extends \Core\Controller
 
   protected function database()
   {
+    \Utils::change_page_title("Database");
     $this->view->database();
-    // \Utils::change_page_title("Database");
   }
 
   protected function table()
   {
+    \Utils::change_page_title("Table");
     $this->view->table();
-    // \Utils::change_page_title("Table");
   }
 }

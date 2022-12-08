@@ -17,11 +17,10 @@ class Controller extends \Core\Controller
 
   protected function signup()
   {
-    $this->view->signup();
-    \Utils::change_page_title("Sign up");
-
-    // must be placed after view otherwise session wouldn't yet have been started
     if (isset($_SESSION["user"])) \Utils::redirect("/");
+
+    \Utils::change_page_title("Sign up");
+    $this->view->signup();
 
     if ($_POST["action"] == "Sign up") {
       $email = $_POST["email"];
@@ -38,11 +37,10 @@ class Controller extends \Core\Controller
 
   protected function login()
   {
+    if (isset($_SESSION["user"])) \Utils::redirect("/");
+
     $this->view->login();
     \Utils::change_page_title("Log in");
-
-    // must be placed after view otherwise session wouldn't yet have been started
-    if (isset($_SESSION["user"])) \Utils::redirect("/");
 
     if ($_POST["action"] == "Log in") {
       $email = $_POST["email"];
@@ -69,8 +67,8 @@ class Controller extends \Core\Controller
 
   protected function logout()
   {
-    $this->view->logout();
     \Utils::change_page_title("Log out");
+    $this->view->logout();
 
     if (isset($_SESSION["user"])) session_unset();
 
@@ -79,11 +77,10 @@ class Controller extends \Core\Controller
 
   protected function reset_password()
   {
-    $this->view->reset_password();
-    \Utils::change_page_title("Reset password");
-
-    // must be placed after view otherwise session wouldn't yet have been started
     if (isset($_SESSION["user"])) \Utils::redirect("/");
+
+    \Utils::change_page_title("Reset password");
+    $this->view->reset_password();
 
     if ($_POST["action"] == "Reset password") {
       $email = $_POST["email"];
