@@ -24,4 +24,16 @@ class Model extends \Core\Model
 
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
+
+  // returns boolean
+  public function db_exists($db)
+  {
+    $stmt = $this->conn->prepare(
+      "SELECT EXISTS(SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?)"
+    );
+    $stmt->execute([$db]);
+
+    // fetch returns string "0" or "1"
+    return $stmt->fetch(\PDO::FETCH_COLUMN) === "1";
+  }
 }
