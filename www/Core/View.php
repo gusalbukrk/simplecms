@@ -8,9 +8,15 @@ class View
 {
   protected $controller;
 
+  // $args is an indexed array containing the arguments passed to a View method
   public function __call($method, $args)
   {
     $method = preg_replace("/_/", "-", $method); // replace slash with underline
+
+    // convert every $args property to a local variable
+    // every $args property must be an associative array w/ only one property (otherwise, error)
+    // key will be used as variable name and value as variable value
+    foreach ($args as $arg) extract($arg);
 
     require_once __DIR__ . "/../views/$this->controller/$method.php";
   }

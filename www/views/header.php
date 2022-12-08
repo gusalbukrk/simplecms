@@ -15,7 +15,6 @@ session_start();
 </head>
 
 <body class="container pt-4">
-
   <header class="d-flex justify-content-between align-items-center mb-5">
     <h1 class="fs-3 mb-0 flex-grow-1"><a class="text-dark" href="https://simpletables.xyz">simpletables.xyz</a></h1>
     <div class="flex-grow-1 text-end">

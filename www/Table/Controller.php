@@ -17,7 +17,14 @@ class Controller extends \Core\Controller
 
   protected function home()
   {
-    $this->view->home();
+    // handle create database form submit
+    if (isset($_POST["db"])) {
+      $this->model->create_db($_POST["db"]);
+    }
+
+    $dbs = $this->model->get_user_dbs($_SESSION["user"]);
+
+    $this->view->home(["dbs" => $dbs]);
   }
 
   protected function database()
