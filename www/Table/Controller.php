@@ -15,18 +15,18 @@ class Controller extends \Core\Controller
     $this->view = new View();
   }
 
-  public function home()
+  protected function home()
   {
     $this->view->home();
   }
 
-  public function database()
+  protected function database()
   {
     $this->view->database();
     // \Utils::change_page_title("Database");
   }
 
-  public function table()
+  protected function table()
   {
     $this->view->table();
     // \Utils::change_page_title("Table");

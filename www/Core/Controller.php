@@ -10,9 +10,27 @@ abstract class Controller
 
   abstract public function __construct();
 
-  static function not_found()
+  // every non-static method call on an instance of Controller is handled by `__call`
+  // as long as the method is inaccessible (for instance, access is set to `protected`)
+  public function __call($method, $args)
   {
-    View::not_found();
-    \Utils::change_page_title("Not found");
+    self::wrap(function () use ($method, $args) {
+      call_user_func_array(array($this, $method), $args); // call the method
+    });
+  }
+
+  static public function not_found()
+  {
+    self::wrap(function () {
+      \Utils::change_page_title("Not found");
+      View::not_found();
+    });
+  }
+
+  static private function wrap($fn)
+  {
+    require_once __DIR__ . "/../views/header.php";
+    $fn();
+    require_once __DIR__ . "/../views/footer.php";
   }
 }
