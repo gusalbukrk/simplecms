@@ -11,12 +11,14 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../vendor/twbs/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../style.css">
+  <!-- https://fontawesome.com/v5/docs/web/setup/host-font-awesome-yourself#using-web-fonts-with-css -->
+  <link rel="stylesheet" href="../vendor/fortawesome/font-awesome/css/all.min.css">
   <title>simpletables.xyz</title>
 </head>
 
 <body class="container pt-4">
   <header class="d-flex justify-content-between align-items-center mb-5">
-    <h1 class="fs-3 mb-0 flex-grow-1"><a class="text-dark" href="https://simpletables.xyz">simpletables.xyz</a></h1>
+    <h1 class="fs-3 mb-0 flex-grow-1"><a class="text-dark" href="https://simpletables.xyz"><i class="fa-solid fa-database text-primary me-3"></i>simpletables.xyz</a></h1>
     <div class="flex-grow-1 text-end">
       <!-- using absolute instead of relative links because of subdomains -->
       <? if (isset($_SESSION["user"])) : ?>
