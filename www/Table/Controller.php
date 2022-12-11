@@ -22,7 +22,7 @@ class Controller extends \Core\Controller
       $this->model->create_db($_POST["db"]);
     }
 
-    $dbs = $this->model->get_user_dbs($_SESSION["user"]);
+    $dbs = isset($_SESSION["user"]) ? $this->model->get_user_dbs($_SESSION["user"]) : [];
 
     $this->view->home(["dbs" => $dbs]);
   }

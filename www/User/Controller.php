@@ -22,7 +22,7 @@ class Controller extends \Core\Controller
     \Utils::change_page_title("Sign up");
     $this->view->signup();
 
-    if ($_POST["action"] == "Sign up") {
+    if (isset($_POST["action"]) && $_POST["action"] == "Sign up") {
       $email = $_POST["email"];
       $password = $_POST["password"];
 
@@ -42,7 +42,7 @@ class Controller extends \Core\Controller
     $this->view->login();
     \Utils::change_page_title("Log in");
 
-    if ($_POST["action"] == "Log in") {
+    if (isset($_POST["action"]) && $_POST["action"] == "Log in") {
       $email = $_POST["email"];
       $password = $_POST["password"];
 
@@ -82,7 +82,7 @@ class Controller extends \Core\Controller
     \Utils::change_page_title("Reset password");
     $this->view->reset_password();
 
-    if ($_POST["action"] == "Reset password") {
+    if (isset($_POST["action"]) && $_POST["action"] == "Reset password") {
       $email = $_POST["email"];
 
       try {

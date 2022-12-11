@@ -26,8 +26,6 @@ class Model extends \Core\Model
 
   public function get_user_dbs($email)
   {
-    if (empty($email)) return [];
-
     $except = ["information_schema", "mysql", "performance_schema", "sys", "simpletables"];
 
     $dbs = []; // associative array — key = database name and value = privilege level
