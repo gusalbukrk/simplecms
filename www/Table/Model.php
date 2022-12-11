@@ -10,19 +10,42 @@ class Model extends \Core\Model
   {
     $this->conn->exec("CREATE DATABASE $database");
 
-    // create role
-    $stmt = $this->conn->prepare("INSERT INTO simpletables.role (db, email, role) VALUES (?, ?, 'admin')");
-    $stmt->execute([$database, $_SESSION["user"]]);
+    // create 'role' table inside database created above
+    $this->conn->exec(
+      "CREATE TABLE $database.user (
+        email VARCHAR(50) NOT NULL,
+        role TINYINT UNSIGNED NOT NULL,
+        FOREIGN KEY (email) REFERENCES simpletables.user(email)
+      )"
+    );
+
+    // insert current user in it as admin
+    $stmt = $this->conn->prepare("INSERT INTO $database.user (email, role) VALUES (?, 1)");
+    $stmt->execute([$_SESSION["user"]]);
   }
 
   public function get_user_dbs($email)
   {
     if (empty($email)) return [];
 
-    $stmt = $this->conn->prepare("SELECT * FROM simpletables.role WHERE email = ?");
-    $stmt->execute([$email]);
+    $except = ["information_schema", "mysql", "performance_schema", "sys", "simpletables"];
 
-    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    $dbs = []; // associative array — key = database name and value = privilege level
+
+    $stmt = $this->conn->prepare("SHOW DATABASES");
+    $stmt->execute();
+
+    while (($db = $stmt->fetchColumn()) !== false) {
+      if (!in_array($db, $except)) {
+        $stmt2 = $this->conn->prepare("SELECT role FROM $db.user WHERE email = ?");
+        $stmt2->execute([$email]);
+        $role = $stmt2->fetchColumn();
+
+        if ($role) $dbs[$db] = $role;
+      }
+    }
+
+    return $dbs;
   }
 
   // returns boolean
