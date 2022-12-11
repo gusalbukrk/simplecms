@@ -10,7 +10,7 @@ class Model extends \Core\Model
   {
     $this->conn->exec("CREATE DATABASE $database");
 
-    // create 'role' table inside database created above
+    // create 'user' table inside database created above
     $this->conn->exec(
       "CREATE TABLE $database.user (
         email VARCHAR(50) NOT NULL,
@@ -19,8 +19,8 @@ class Model extends \Core\Model
       )"
     );
 
-    // insert current user in it as admin
-    $stmt = $this->conn->prepare("INSERT INTO $database.user (email, role) VALUES (?, 1)");
+    // insert current user as admin in the newly created 'user' table
+    $stmt = $this->conn->prepare("INSERT INTO $database.user (email, role) VALUES (?, " . Roles::Admin->value . ")");
     $stmt->execute([$_SESSION["user"]]);
   }
 
@@ -28,7 +28,7 @@ class Model extends \Core\Model
   {
     $except = ["information_schema", "mysql", "performance_schema", "sys", "simpletables"];
 
-    $dbs = []; // associative array — key = database name and value = privilege level
+    $dbs = []; // associative array — key = database name and value = role
 
     $stmt = $this->conn->prepare("SHOW DATABASES");
     $stmt->execute();
@@ -39,7 +39,7 @@ class Model extends \Core\Model
         $stmt2->execute([$email]);
         $role = $stmt2->fetchColumn();
 
-        if ($role) $dbs[$db] = $role;
+        if ($role !== false) $dbs[$db] = Roles::from($role);
       }
     }
 
@@ -54,7 +54,6 @@ class Model extends \Core\Model
     );
     $stmt->execute([$db]);
 
-    // fetch returns string "0" or "1"
     return $stmt->fetch(\PDO::FETCH_COLUMN) === "1";
   }
 }

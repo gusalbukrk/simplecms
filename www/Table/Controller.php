@@ -7,6 +7,14 @@ require_once __DIR__ . "/../Core/Controller.php";
 require_once __DIR__ . "/Model.php";
 require_once __DIR__ . "/View.php";
 
+// privilege levels
+enum Roles: int
+{
+  case Reader = 0;
+  case Editor = 1;
+  case Admin = 2;
+}
+
 class Controller extends \Core\Controller
 {
   public function __construct()

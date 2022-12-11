@@ -9,8 +9,8 @@
 
   <h4 class="mb-3">Databases</h4>
   <ul>
-    <?php foreach ($dbs as $db => $level) : ?>
-      <li><a href="https://<?= $db ?>.simpletables.xyz"><?= $db ?> = <?= $level ?></a></li>
+    <?php foreach ($dbs as $db => $role) : ?>
+      <li><a href="https://<?= $db ?>.simpletables.xyz"><?= $db ?> = <?= $role->name ?></a></li>
     <?php endforeach; ?>
   </ul>
 <?php endif; ?>
