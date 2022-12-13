@@ -6,13 +6,13 @@ require_once __DIR__ . "/../Core/Model.php";
 
 class Model extends \Core\Model
 {
-  public function create_db($database)
+  public function create_db($db)
   {
-    $this->conn->exec("CREATE DATABASE $database");
+    $this->conn->exec("CREATE DATABASE $db");
 
     // create 'user' table inside database created above
     $this->conn->exec(
-      "CREATE TABLE $database.user (
+      "CREATE TABLE $db.user (
         email VARCHAR(50) NOT NULL,
         role TINYINT UNSIGNED NOT NULL,
         FOREIGN KEY (email) REFERENCES simpletables.user(email)
@@ -20,7 +20,7 @@ class Model extends \Core\Model
     );
 
     // insert current user as admin in the newly created 'user' table
-    $stmt = $this->conn->prepare("INSERT INTO $database.user (email, role) VALUES (?, " . Roles::Admin->value . ")");
+    $stmt = $this->conn->prepare("INSERT INTO $db.user (email, role) VALUES (?, " . Roles::Admin->value . ")");
     $stmt->execute([$_SESSION["user"]]);
   }
 
