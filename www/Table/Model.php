@@ -46,7 +46,6 @@ class Model extends \Core\Model
     return $dbs;
   }
 
-  // returns boolean
   public function db_exists($db)
   {
     $stmt = $this->conn->prepare(
@@ -55,5 +54,10 @@ class Model extends \Core\Model
     $stmt->execute([$db]);
 
     return $stmt->fetch(\PDO::FETCH_COLUMN) === "1";
+  }
+
+  public function delete_db($db)
+  {
+    return $this->conn->exec("DROP DATABASE $db");
   }
 }

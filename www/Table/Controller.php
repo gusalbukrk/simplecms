@@ -25,9 +25,14 @@ class Controller extends \Core\Controller
 
   protected function home()
   {
-    // handle create database form submit
-    if (isset($_POST["db"])) {
-      $this->model->create_db($_POST["db"]);
+    if (isset($_POST["action"])) {
+      if ($_POST["action"] === "Create") {
+        $this->model->create_db($_POST["db"]);
+      }
+
+      if ($_POST["action"] === "Remove") {
+        $this->model->delete_db($_POST["db"]);
+      }
     }
 
     $dbs = isset($_SESSION["user"]) ? $this->model->get_user_dbs($_SESSION["user"]) : [];
