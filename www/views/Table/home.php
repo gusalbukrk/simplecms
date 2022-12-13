@@ -7,20 +7,24 @@
     <input class="btn btn-primary" type="submit" value="Create">
   </form>
   <h4 class="mb-3">Databases</h4>
-  <table class="table table-hover max-w-250">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Role</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php foreach ($dbs as $db => $role) : ?>
+  <?php if ($dbs) : ?>
+    <table class="table table-hover max-w-250">
+      <thead>
         <tr>
-          <td><a href="https://<?= $db ?>.simpletables.xyz"><?= $db ?></a></td>
-          <td><?= $role->name ?></td>
+          <th>Name</th>
+          <th>Role</th>
         </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <?php foreach ($dbs as $db => $role) : ?>
+          <tr>
+            <td><a href="https://<?= $db ?>.simpletables.xyz"><?= $db ?></a></td>
+            <td><?= strtolower($role->name) ?></td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  <?php else : ?>
+    <p class="fw-bold">No databases found.</p>
+  <? endif; ?>
 <?php endif; ?>
