@@ -10,6 +10,10 @@ header #user {
   font-size: .8rem !important;
 }
 
+.max-w-250 {
+  max-width: 250px;
+}
+
 .max-w-350 {
   max-width: 350px;
 }

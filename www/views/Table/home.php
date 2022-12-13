@@ -6,11 +6,21 @@
     <input class="border-dark border-opacity-75 rounded me-2" type="text" name="db" style="padding: 3px" pattern="\w+" required>
     <input class="btn btn-primary" type="submit" value="Create">
   </form>
-
   <h4 class="mb-3">Databases</h4>
-  <ul>
-    <?php foreach ($dbs as $db => $role) : ?>
-      <li><a href="https://<?= $db ?>.simpletables.xyz"><?= $db ?> = <?= $role->name ?></a></li>
-    <?php endforeach; ?>
-  </ul>
+  <table class="table table-hover max-w-250">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($dbs as $db => $role) : ?>
+        <tr>
+          <td><a href="https://<?= $db ?>.simpletables.xyz"><?= $db ?></a></td>
+          <td><?= $role->name ?></td>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
 <?php endif; ?>
