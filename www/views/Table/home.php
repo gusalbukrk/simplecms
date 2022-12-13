@@ -8,20 +8,30 @@
   </form>
   <h4 class="mb-3">Databases</h4>
   <?php if ($dbs) : ?>
-    <table class="table table-hover max-w-350">
+    <table class="table table-hover container m-0 max-w-350">
       <thead>
-        <tr>
-          <th>Name</th>
-          <th>Role</th>
-          <th></th>
+        <tr class="row">
+          <th class="col">Name</th>
+          <th class="col">Role</th>
+          <th class="col"></th>
+          <th class="col"></th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($dbs as $db => $role) : ?>
-          <tr>
-            <td><a href="https://<?= $db ?>.simpletables.xyz"><?= $db ?></a></td>
-            <td><?= strtolower($role->name) ?></td>
-            <td>
+          <tr class="row">
+            <td class="col">
+              <form method="post">
+                <input class="w-100 border-0 bg-transparent" type="text" name="db" value="<?= $db ?>">
+              </form>
+            </td>
+            <td class="col"><?= strtolower($role->name) ?></td>
+            <td class="col text-center">
+              <a href="https://<?= $db ?>.simpletables.xyz">
+                <i class="fa-solid fa-arrow-up-right-from-square text-primary"></i>
+              </a>
+            </td>
+            <td class="col text-center">
               <form method="post">
                 <button class="btn m-0 p-0 border-0" name="action" value="Remove">
                   <input type="hidden" name="db" value="<?= $db ?>">
