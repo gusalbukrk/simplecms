@@ -11,27 +11,32 @@
     <table class="table table-hover container m-0 max-w-350">
       <thead>
         <tr class="row">
-          <th class="col">Name</th>
-          <th class="col">Role</th>
-          <th class="col"></th>
-          <th class="col"></th>
+          <th class="col-4">Name</th>
+          <th class="col-4">Role</th>
+          <th class="col-2"></th>
+          <th class="col-2"></th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($dbs as $db => $role) : ?>
           <tr class="row">
-            <td class="col">
-              <form method="post">
-                <input class="w-100 border-0 bg-transparent" type="text" name="db" value="<?= $db ?>">
+            <td class="col-4 d-flex">
+              <form class="me-2" method="post" style="width: 66.6%;">
+                <input type="hidden" name="db" value="<?= $db ?>">
+                <input id="nameInput" class="w-100 border-0 bg-transparent" type="text" name="name" value="<?= $db ?>" readonly>
+                <input type="hidden" name="action" value="Rename">
               </form>
-            </td>
-            <td class="col"><?= strtolower($role->name) ?></td>
-            <td class="col text-center">
-              <a href="https://<?= $db ?>.simpletables.xyz">
+              <a class="text-center" href="https://<?= $db ?>.simpletables.xyz" style="width: 33.3%;">
                 <i class="fa-solid fa-arrow-up-right-from-square text-primary"></i>
               </a>
             </td>
-            <td class="col text-center">
+            <td class="col-4"><?= strtolower($role->name) ?></td>
+            <td class="col-2">
+              <button id="renameButton" class="btn m-0 p-0 border-0">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+            </td>
+            <td class="col-2 text-center">
               <form method="post">
                 <button class="btn m-0 p-0 border-0" name="action" value="Remove">
                   <input type="hidden" name="db" value="<?= $db ?>">
@@ -47,3 +52,16 @@
     <p class="fw-bold">No databases found.</p>
   <? endif; ?>
 <?php endif; ?>
+<script>
+  const nameInput = document.getElementById("nameInput");
+
+  nameInput.addEventListener('focusout', e => {
+    nameInput.setAttribute('readonly', '');
+  });
+
+  document.getElementById("renameButton").addEventListener('click', e => {
+    nameInput.removeAttribute('readonly');
+    nameInput.focus();
+    nameInput.select();
+  });
+</script>

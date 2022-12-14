@@ -60,4 +60,26 @@ class Model extends \Core\Model
   {
     return $this->conn->exec("DROP DATABASE $db");
   }
+
+  public function get_all_tables_from_db($db)
+  {
+    $stmt = $this->conn->prepare("SHOW TABLES FROM $db");
+    $stmt->execute();
+    $tables = $stmt->fetchAll(\PDO::FETCH_COLUMN);
+
+    return $tables;
+  }
+
+  public function rename_database($old, $new)
+  {
+    $this->conn->exec("CREATE DATABASE $new");
+
+    // move all tables in $old to $new
+    $tables = $this->get_all_tables_from_db($old);
+    foreach ($tables as $table) {
+      $this->conn->exec("RENAME TABLE $old.$table TO $new.$table");
+    }
+
+    $this->delete_db($old);
+  }
 }

@@ -33,6 +33,10 @@ class Controller extends \Core\Controller
       if ($_POST["action"] === "Remove") {
         $this->model->delete_db($_POST["db"]);
       }
+
+      if ($_POST["action"] === "Rename") {
+        $this->model->rename_database($_POST["db"], $_POST["name"]);
+      }
     }
 
     $dbs = isset($_SESSION["user"]) ? $this->model->get_user_dbs($_SESSION["user"]) : [];
