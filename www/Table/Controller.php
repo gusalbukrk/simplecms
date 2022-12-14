@@ -26,16 +26,16 @@ class Controller extends \Core\Controller
   protected function home()
   {
     if (isset($_POST["action"])) {
-      if ($_POST["action"] === "Create") {
-        $this->model->create_db($_POST["db"]);
-      }
-
-      if ($_POST["action"] === "Remove") {
-        $this->model->delete_db($_POST["db"]);
-      }
-
-      if ($_POST["action"] === "Rename") {
-        $this->model->rename_database($_POST["db"], $_POST["name"]);
+      switch ($_POST["action"]) {
+        case "Create":
+          $this->model->create_db($_POST["db"], true);
+          break;
+        case "Rename":
+          $this->model->rename_database($_POST["db"], $_POST["name"]);
+          break;
+        case "Delete":
+          $this->model->delete_db($_POST["db"]);
+          break;
       }
     }
 

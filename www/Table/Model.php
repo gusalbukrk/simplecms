@@ -6,22 +6,23 @@ require_once __DIR__ . "/../Core/Model.php";
 
 class Model extends \Core\Model
 {
-  public function create_db($db)
+  public function create_db($db, $create_user_table = false)
   {
     $this->conn->exec("CREATE DATABASE $db");
 
-    // create 'user' table inside database created above
-    $this->conn->exec(
-      "CREATE TABLE $db.user (
+    if ($create_user_table) { // create table inside database created above
+      $this->conn->exec(
+        "CREATE TABLE $db.user (
         email VARCHAR(50) NOT NULL,
         role TINYINT UNSIGNED NOT NULL,
         FOREIGN KEY (email) REFERENCES simpletables.user(email)
-      )"
-    );
+        )"
+      );
 
-    // insert current user as admin in the newly created 'user' table
-    $stmt = $this->conn->prepare("INSERT INTO $db.user (email, role) VALUES (?, " . Roles::Admin->value . ")");
-    $stmt->execute([$_SESSION["user"]]);
+      // insert current user as admin in the newly created table
+      $stmt = $this->conn->prepare("INSERT INTO $db.user (email, role) VALUES (?, " . Roles::Admin->value . ")");
+      $stmt->execute([$_SESSION["user"]]);
+    }
   }
 
   public function get_user_dbs($email)
@@ -72,7 +73,7 @@ class Model extends \Core\Model
 
   public function rename_database($old, $new)
   {
-    $this->conn->exec("CREATE DATABASE $new");
+    $this->create_db($new);
 
     // move all tables in $old to $new
     $tables = $this->get_all_tables_from_db($old);

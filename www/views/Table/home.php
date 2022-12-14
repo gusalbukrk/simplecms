@@ -38,7 +38,7 @@
             </td>
             <td class="col-2 text-center">
               <form method="post">
-                <button class="btn m-0 p-0 border-0" name="action" value="Remove">
+                <button class="btn m-0 p-0 border-0" name="action" value="Delete">
                   <input type="hidden" name="db" value="<?= $db ?>">
                   <i class="fa-solid fa-trash text-danger"></i>
                 </button>
