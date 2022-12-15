@@ -11,8 +11,9 @@
     <table class="table table-hover container m-0 max-w-350">
       <thead>
         <tr class="row">
-          <th class="col-4">Name</th>
-          <th class="col-4">Role</th>
+          <th class="col-2"></th>
+          <th class="col-3">Name</th>
+          <th class="col-3">Role</th>
           <th class="col-2"></th>
           <th class="col-2"></th>
         </tr>
@@ -20,17 +21,19 @@
       <tbody>
         <?php foreach ($dbs as $db => $role) : ?>
           <tr class="row">
-            <td class="col-4 d-flex">
-              <form class="me-2" method="post" style="width: 66.6%;">
-                <input type="hidden" name="db" value="<?= $db ?>">
-                <input id="nameInput" class="w-100 border-0 bg-transparent" type="text" name="name" value="<?= $db ?>" readonly>
-                <input type="hidden" name="action" value="Rename">
-              </form>
-              <a class="text-center" href="https://<?= $db ?>.simpletables.xyz" style="width: 33.3%;">
-                <i class="fa-solid fa-arrow-up-right-from-square text-primary"></i>
+            <td class="col-2">
+              <a href="https://<?= $db ?>.simpletables.xyz">
+                <i class="fa-solid fa-up-right-from-square"></i>
               </a>
             </td>
-            <td class="col-4"><?= strtolower($role->name) ?></td>
+            <td class="col-3">
+              <form class="me-2" method="post">
+                <input type="hidden" name="db" value="<?= $db ?>">
+                <input id="nameInput" class="w-100 border-0 bg-transparent text-dark" type="text" name="name" value="<?= $db ?>" disabled>
+                <input type="hidden" name="action" value="Rename">
+              </form>
+            </td>
+            <td class="col-3"><?= strtolower($role->name) ?></td>
             <td class="col-2">
               <button id="renameButton" class="btn m-0 p-0 border-0">
                 <i class="fa-solid fa-pen-to-square"></i>
@@ -54,13 +57,17 @@
 <?php endif; ?>
 <script>
   const nameInput = document.getElementById("nameInput");
+  const nameInputValue = nameInput.value;
 
   nameInput.addEventListener('focusout', e => {
-    nameInput.setAttribute('readonly', '');
+    nameInput.setAttribute('disabled', '');
+
+    // if focusout, form wasn't submitted; therefore, name hasn't changed
+    nameInput.value = nameInputValue;
   });
 
   document.getElementById("renameButton").addEventListener('click', e => {
-    nameInput.removeAttribute('readonly');
+    nameInput.removeAttribute('disabled');
     nameInput.focus();
     nameInput.select();
   });
