@@ -10,7 +10,7 @@
   <?php if ($dbs) : ?>
     <table class="table table-hover container m-0 max-w-350">
       <thead>
-        <tr class="row">
+        <tr class="row mx-0">
           <th class="col-2"></th>
           <th class="col-3">Name</th>
           <th class="col-3">Role</th>
@@ -20,7 +20,7 @@
       </thead>
       <tbody>
         <?php foreach ($dbs as $db => $role) : ?>
-          <tr class="row">
+          <tr class="row mx-0">
             <td class="col-2">
               <a href="https://<?= $db ?>.simpletables.xyz">
                 <i class="fa-solid fa-up-right-from-square"></i>
