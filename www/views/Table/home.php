@@ -8,7 +8,7 @@
   </form>
   <h4 class="mb-3">Databases</h4>
   <?php if ($dbs) : ?>
-    <table class="table table-hover container m-0 max-w-350">
+    <table id="dbs" class="table table-hover container m-0 max-w-350">
       <thead>
         <tr class="row mx-0">
           <th class="col-2"></th>
@@ -29,13 +29,13 @@
             <td class="col-3">
               <form class="me-2" method="post">
                 <input type="hidden" name="db" value="<?= $db ?>">
-                <input id="nameInput" class="w-100 border-0 bg-transparent text-dark" type="text" name="name" value="<?= $db ?>" disabled>
+                <input class="w-100 border-0 bg-transparent text-dark" type="text" name="name" value="<?= $db ?>" disabled>
                 <input type="hidden" name="action" value="Rename">
               </form>
             </td>
             <td class="col-3"><?= strtolower($role->name) ?></td>
             <td class="col-2">
-              <button id="renameButton" class="btn m-0 p-0 border-0">
+              <button class="btn m-0 p-0 border-0" name="action" value="Rename">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
             </td>
@@ -54,21 +54,35 @@
   <?php else : ?>
     <p class="fw-bold">No databases found.</p>
   <? endif; ?>
+  <script>
+    // iterate through every row of the table used to list the databases
+    // in order to add the following event: when one of the rename buttons is clicked,
+    // focus and select the database name input of that respective row
+    (function() {
+      const tbody = document.querySelector('table#dbs tbody');
+
+      for (let i = 1; i <= tbody.children.length; i++) {
+        const row = tbody.querySelector(`tr:nth-child(${i})`);
+
+        const input = row.querySelector('td:nth-child(2) form input[name="name"]');
+        const button = row.querySelector('td:nth-child(4) button[value="Rename"]');
+
+        const inputValueBak = input.value;
+
+        button.addEventListener('click', e => {
+          input.removeAttribute('disabled');
+          input.focus();
+          input.select();
+        });
+
+        // additionally, handle input focusout
+        input.addEventListener('focusout', e => {
+          input.setAttribute('disabled', '');
+
+          // if focusout, form wasn't submitted; therefore, name hasn't changed
+          input.value = inputValueBak;
+        });
+      }
+    })()
+  </script>
 <?php endif; ?>
-<script>
-  const nameInput = document.getElementById("nameInput");
-  const nameInputValue = nameInput.value;
-
-  nameInput.addEventListener('focusout', e => {
-    nameInput.setAttribute('disabled', '');
-
-    // if focusout, form wasn't submitted; therefore, name hasn't changed
-    nameInput.value = nameInputValue;
-  });
-
-  document.getElementById("renameButton").addEventListener('click', e => {
-    nameInput.removeAttribute('disabled');
-    nameInput.focus();
-    nameInput.select();
-  });
-</script>
