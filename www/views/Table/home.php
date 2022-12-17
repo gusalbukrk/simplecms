@@ -1,14 +1,9 @@
 <?php if (!isset($_SESSION["user"])) : ?>
   <h4>Login or sign up to create tables</h4>
 <?php else : ?>
-  <h4 class="mb-3">Create database</h4>
-  <form class="mb-5" method="post">
-    <input class="border-dark border-opacity-75 rounded me-2" type="text" name="db" style="padding: 3px" pattern="\w+" required>
-    <input class="btn btn-primary" type="submit" name="action" value="Create">
-  </form>
-  <h4 class="mb-3">Databases</h4>
+  <h4 class="mb-4 text-uppercase">Databases</h4>
   <?php if ($dbs) : ?>
-    <table id="dbs" class="table table-hover container m-0 max-w-350">
+    <table id="dbs" class="table table-hover table-borderless container m-0 max-w-350 mb-3">
       <thead>
         <tr class="row mx-0">
           <th class="col-2"></th>
@@ -51,38 +46,42 @@
         <?php endforeach; ?>
       </tbody>
     </table>
+    <script>
+      // iterate through every row of the table used to list the databases
+      // in order to add the following event: when one of the rename buttons is clicked,
+      // focus and select the database name input of that respective row
+      (function() {
+        const tbody = document.querySelector('table#dbs tbody');
+
+        for (let i = 1; i <= tbody.children.length; i++) {
+          const row = tbody.querySelector(`tr:nth-child(${i})`);
+
+          const input = row.querySelector('td:nth-child(2) form input[name="name"]');
+          const button = row.querySelector('td:nth-child(4) button[value="Rename"]');
+
+          const inputValueBak = input.value;
+
+          button.addEventListener('click', e => {
+            input.removeAttribute('disabled');
+            input.focus();
+            input.select();
+          });
+
+          // additionally, handle input focusout
+          input.addEventListener('focusout', e => {
+            input.setAttribute('disabled', '');
+
+            // if focusout, form wasn't submitted; therefore, name hasn't changed
+            input.value = inputValueBak;
+          });
+        }
+      })()
+    </script>
   <?php else : ?>
-    <p class="fw-bold">No databases found.</p>
-  <? endif; ?>
-  <script>
-    // iterate through every row of the table used to list the databases
-    // in order to add the following event: when one of the rename buttons is clicked,
-    // focus and select the database name input of that respective row
-    (function() {
-      const tbody = document.querySelector('table#dbs tbody');
-
-      for (let i = 1; i <= tbody.children.length; i++) {
-        const row = tbody.querySelector(`tr:nth-child(${i})`);
-
-        const input = row.querySelector('td:nth-child(2) form input[name="name"]');
-        const button = row.querySelector('td:nth-child(4) button[value="Rename"]');
-
-        const inputValueBak = input.value;
-
-        button.addEventListener('click', e => {
-          input.removeAttribute('disabled');
-          input.focus();
-          input.select();
-        });
-
-        // additionally, handle input focusout
-        input.addEventListener('focusout', e => {
-          input.setAttribute('disabled', '');
-
-          // if focusout, form wasn't submitted; therefore, name hasn't changed
-          input.value = inputValueBak;
-        });
-      }
-    })()
-  </script>
+    <p class="fw-bold mb-3">No databases found.</p>
+  <?php endif; ?>
+  <form class="max-w-350 d-flex" method="post">
+    <input class="form-control-sm flex-fill me-3 border-dark border-opacity-75 rounded" type="text" name="db" style="padding: 3px" pattern="\w+" required>
+    <input class="btn btn-primary flex-fill btn-sm fw-bold" type="submit" name="action" value="Create">
+  </form>
 <?php endif; ?>
