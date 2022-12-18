@@ -54,7 +54,7 @@ class Model extends \Core\Model
     );
     $stmt->execute([$db]);
 
-    return $stmt->fetch(\PDO::FETCH_COLUMN) === "1";
+    return $stmt->fetch(\PDO::FETCH_COLUMN) === 1;
   }
 
   public function delete_db($db)

@@ -47,9 +47,9 @@ class Controller extends \Core\Controller
   protected function database()
   {
     $db = explode(".", $_SERVER["HTTP_HOST"])[0];
-    $exists = $this->model->db_exists($db) == true;
+    $exists = $this->model->db_exists($db);
 
-    \Utils::change_page_title("Database");
+    \Utils::change_page_title("$db database");
     $this->view->database(["db" => $db, "exists" => $exists]);
   }
 

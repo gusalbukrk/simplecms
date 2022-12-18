@@ -1,9 +1,8 @@
 <?php if (!$exists) : ?>
   <h4>Database does not exist</h4>
 <?php else : ?>
-  <h4 class="mb-3 fw-normal"><?= "<b>Database</b>: " . ucfirst($db) ?></h4>
-
-  <form class="container max-w-350" method="post">
+  <h4 class="mb-4 fw-normal">Database: <b><?= ucfirst($db) ?></b></h4>
+  <form class="container max-w-350 mx-0" method="post">
     <div class="row mb-3">
       <select id="select" class="form-select col me-3" name="type">
         <option>text</option>
