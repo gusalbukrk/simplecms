@@ -49,8 +49,10 @@ class Controller extends \Core\Controller
     $db = explode(".", $_SERVER["HTTP_HOST"])[0];
     $exists = $this->model->db_exists($db);
 
+    $tables = $exists ? $this->model->get_all_tables_from_db($db) : null;
+
     \Utils::change_page_title("$db database");
-    $this->view->database(["db" => $db, "exists" => $exists]);
+    $this->view->database(["db" => $db, "exists" => $exists, "tables" => $tables]);
   }
 
   protected function table()
