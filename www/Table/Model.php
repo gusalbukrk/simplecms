@@ -4,6 +4,14 @@ namespace Table;
 
 require_once __DIR__ . "/../Core/Model.php";
 
+// privilege levels
+enum Roles: int
+{
+  case Reader = 0;
+  case Editor = 1;
+  case Admin = 2;
+}
+
 class Model extends \Core\Model
 {
   public function create_db($db, $create_user_table = false)
@@ -82,5 +90,14 @@ class Model extends \Core\Model
     }
 
     $this->delete_db($old);
+  }
+
+  // return role integer (check Roles enum)
+  public function get_db_user($db, $email)
+  {
+    $stmt = $this->conn->prepare("SELECT role FROM $db.user WHERE email = ?");
+    $stmt->execute([$email]);
+
+    return Roles::from($stmt->fetchColumn());
   }
 }

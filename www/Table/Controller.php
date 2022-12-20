@@ -7,14 +7,6 @@ require_once __DIR__ . "/../Core/Controller.php";
 require_once __DIR__ . "/Model.php";
 require_once __DIR__ . "/View.php";
 
-// privilege levels
-enum Roles: int
-{
-  case Reader = 0;
-  case Editor = 1;
-  case Admin = 2;
-}
-
 class Controller extends \Core\Controller
 {
   public function __construct()
@@ -51,8 +43,10 @@ class Controller extends \Core\Controller
 
     $tables = $exists ? $this->model->get_all_tables_from_db($db) : null;
 
+    $role = $this->model->get_db_user($db, $_SESSION["user"]);
+
     \Utils::change_page_title("$db database");
-    $this->view->database(["db" => $db, "exists" => $exists, "tables" => $tables]);
+    $this->view->database(["db" => $db, "exists" => $exists, "role" => $role, "tables" => $tables]);
   }
 
   protected function table()
