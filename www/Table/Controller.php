@@ -18,16 +18,16 @@ class Controller extends \Core\Controller
   protected function home()
   {
     if (isset($_POST["action"])) {
-      switch ($_POST["action"]) {
-        case "Create":
-          $this->model->create_db($_POST["db"], true);
-          break;
-        case "Rename":
+      $action = $_POST["action"];
+
+      if ($action === "Create") {
+        $this->model->create_db($_POST["db"], true);
+      } else if (isset($_POST["role"]) && $_POST["role"] === "Admin") { // only admins can rename or delete databases
+        if ($action === "Rename") {
           $this->model->rename_database($_POST["db"], $_POST["name"]);
-          break;
-        case "Delete":
+        } else if ($action === "Delete") {
           $this->model->delete_db($_POST["db"]);
-          break;
+        }
       }
     }
 
