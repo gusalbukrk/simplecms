@@ -15,7 +15,7 @@ class Controller extends \Core\Controller
     $this->view = new View();
   }
 
-  protected function home()
+  protected function databases()
   {
     if (isset($_POST["action"])) {
       $action = $_POST["action"];
@@ -33,10 +33,10 @@ class Controller extends \Core\Controller
 
     $dbs = isset($_SESSION["user"]) ? $this->model->get_user_dbs($_SESSION["user"]) : [];
 
-    $this->view->home(["dbs" => $dbs]);
+    $this->view->databases(["dbs" => $dbs]);
   }
 
-  protected function database()
+  protected function tables()
   {
     $db = explode(".", $_SERVER["HTTP_HOST"])[0];
     $exists = $this->model->db_exists($db);
@@ -47,7 +47,7 @@ class Controller extends \Core\Controller
     }
 
     \Utils::change_page_title("$db database");
-    $this->view->database([
+    $this->view->tables([
       "db" => $db,
       "exists" => $exists,
       "role" => $role ?? null,
@@ -55,9 +55,9 @@ class Controller extends \Core\Controller
     ]);
   }
 
-  protected function table()
+  protected function records()
   {
     \Utils::change_page_title("Table");
-    $this->view->table();
+    $this->view->records();
   }
 }
