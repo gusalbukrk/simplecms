@@ -37,9 +37,9 @@
             </td>
             <td class="col-2 text-center">
               <form method="post">
+                <input type="hidden" name="db" value="<?= $db ?>">
+                <input type="hidden" name="role" value="<?= $role->name ?>">
                 <button class="btn m-0 p-0 border-0" name="action" value="Delete" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
-                  <input type="hidden" name="db" value="<?= $db ?>">
-                  <input type="hidden" name="role" value="<?= $role->name ?>">
                   <i class="fa-solid fa-trash text-danger"></i>
                 </button>
               </form>

@@ -41,12 +41,18 @@ class Controller extends \Core\Controller
     $db = explode(".", $_SERVER["HTTP_HOST"])[0];
     $exists = $this->model->db_exists($db);
 
-    $tables = $exists ? $this->model->get_all_tables_from_db($db) : null;
-
-    $role = $this->model->get_db_user($db, $_SESSION["user"]);
+    if ($exists) {
+      $tables = $this->model->get_all_tables_from_db($db);
+      $role = $this->model->get_db_user($db, $_SESSION["user"]);
+    }
 
     \Utils::change_page_title("$db database");
-    $this->view->database(["db" => $db, "exists" => $exists, "role" => $role, "tables" => $tables]);
+    $this->view->database([
+      "db" => $db,
+      "exists" => $exists,
+      "role" => $role ?? null,
+      "tables" => $tables ?? null,
+    ]);
   }
 
   protected function table()

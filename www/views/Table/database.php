@@ -24,19 +24,21 @@
             <td class="col-6">
               <form class="me-2" method="post">
                 <input type="hidden" name="db" value="<?= $table ?>">
+                <input type="hidden" name="role" value="<?= $role->name ?>">
                 <input class="w-100 border-0 bg-transparent text-dark" type="text" name="name" value="<?= $table ?>" disabled>
                 <input type="hidden" name="action" value="Rename">
               </form>
             </td>
             <td class="col-2">
-              <button class="btn m-0 p-0 border-0" name="action" value="Rename">
+              <button class="btn m-0 p-0 border-0" name="action" value="Rename" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
             </td>
             <td class="col-2 text-center">
               <form method="post">
-                <button class="btn m-0 p-0 border-0" name="action" value="Delete">
-                  <input type="hidden" name="db" value="<?= $table ?>">
+                <input type="hidden" name="db" value="<?= $table ?>">
+                <input type="hidden" name="role" value="<?= $role->name ?>">
+                <button class="btn m-0 p-0 border-0" name="action" value="Delete" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
                   <i class="fa-solid fa-trash text-danger"></i>
                 </button>
               </form>
