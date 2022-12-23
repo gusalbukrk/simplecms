@@ -11,6 +11,7 @@ class Controller extends \Core\Controller
 {
   public function __construct()
   {
+    $this->must_be_logged_in = true;
     $this->model = new Model();
     $this->view = new View();
   }

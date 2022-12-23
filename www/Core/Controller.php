@@ -6,7 +6,7 @@ namespace Core;
 // "roughly" because slashes are converted to underlines (function names can't contain slashes)
 abstract class Controller
 {
-  protected $model, $view;
+  protected $must_be_logged_in = false, $model, $view;
 
   abstract public function __construct();
 
@@ -15,6 +15,10 @@ abstract class Controller
   public function __call($method, $args)
   {
     self::wrap(function () use ($method, $args) {
+      if ($this->must_be_logged_in && !isset($_SESSION["user"])) {
+        \Utils::redirect("https://simpletables.xyz/login");
+      }
+
       call_user_func_array(array($this, $method), $args); // call the method
     });
   }
