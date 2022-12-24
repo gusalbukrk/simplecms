@@ -4,6 +4,6 @@
     <input type="email" name="email" id="email" required>
   </div>
   <div class="row mb-3">
-    <input class="btn btn-primary" type="submit" name="action" value="Reset password">
+    <input class="btn btn-primary" type="submit" name="action" value="reset password">
   </div>
 </form>

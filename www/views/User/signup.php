@@ -10,6 +10,6 @@
   </div>
 
   <div class="row">
-    <input class="btn btn-primary" type="submit" name="action" value="Sign up">
+    <input class="btn btn-primary" type="submit" name="action" value="sign up">
   </div>
 </form>

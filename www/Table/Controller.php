@@ -21,12 +21,12 @@ class Controller extends \Core\Controller
     if (isset($_POST["action"])) {
       $action = $_POST["action"];
 
-      if ($action === "Create") {
+      if ($action === "create") {
         $this->model->create_db($_POST["db"], true);
       } else if (isset($_POST["role"]) && $_POST["role"] === "Admin") { // only admins can rename or delete databases
-        if ($action === "Rename") {
+        if ($action === "rename") {
           $this->model->rename_database($_POST["db"], $_POST["name"]);
-        } else if ($action === "Delete") {
+        } else if ($action === "delete") {
           $this->model->delete_db($_POST["db"]);
         }
       }
@@ -34,6 +34,7 @@ class Controller extends \Core\Controller
 
     $dbs = isset($_SESSION["user"]) ? $this->model->get_user_dbs($_SESSION["user"]) : [];
 
+    \Utils::change_page_title("Databases");
     $this->view->databases(["dbs" => $dbs]);
   }
 

@@ -2,6 +2,10 @@ a {
   text-decoration: none;
 }
 
+input[type="submit"] {
+  text-transform: capitalize;
+}
+
 header #user {
   font-size: 1.125rem;
 }

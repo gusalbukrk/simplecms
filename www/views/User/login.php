@@ -8,7 +8,7 @@
     <input type="password" name="password" id="password" required>
   </div>
   <div class="row mb-3">
-    <input class="btn btn-primary" type="submit" name="action" value="Log in">
+    <input class="btn btn-primary" type="submit" name="action" value="log in">
   </div>
   <p class="row text-end">
     <a class="px-0" href="reset-password">Reset password</a>
