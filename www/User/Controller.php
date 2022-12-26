@@ -17,7 +17,7 @@ class Controller extends \Core\Controller
 
   protected function signup()
   {
-    if (isset($_SESSION["user"])) \Utils::redirect("/");
+    if (isset($_SESSION["user"])) \Utils::redirect("");
 
     \Utils::change_page_title("Sign up");
     $this->view->signup();
@@ -27,7 +27,7 @@ class Controller extends \Core\Controller
       $password = $_POST["password"];
 
       try {
-        if ($this->model->create($email, $password)) \Utils::redirect("/");
+        if ($this->model->create($email, $password)) \Utils::redirect("");
         throw new \Exception("user creation failed");
       } catch (\Exception $e) {
         exit("<b>Couldn't sign up</b>: " . $e->getMessage() . ".");
@@ -37,7 +37,7 @@ class Controller extends \Core\Controller
 
   protected function login()
   {
-    if (isset($_SESSION["user"])) \Utils::redirect("/");
+    if (isset($_SESSION["user"])) \Utils::redirect("");
 
     $this->view->login();
     \Utils::change_page_title("Log in");
@@ -52,7 +52,7 @@ class Controller extends \Core\Controller
         if (isset($user)) {
           if (password_verify($password, $user["password"])) {
             $_SESSION["user"] = $email;
-            \Utils::redirect("/");
+            \Utils::redirect("");
           } else {
             throw new \Exception("wrong password");
           }
@@ -72,12 +72,12 @@ class Controller extends \Core\Controller
 
     if (isset($_SESSION["user"])) session_unset();
 
-    \Utils::redirect("/");
+    \Utils::redirect("");
   }
 
   protected function reset_password()
   {
-    if (isset($_SESSION["user"])) \Utils::redirect("/");
+    if (isset($_SESSION["user"])) \Utils::redirect("");
 
     \Utils::change_page_title("Reset password");
     $this->view->reset_password();

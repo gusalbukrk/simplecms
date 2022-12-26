@@ -18,9 +18,9 @@ class Utils
   }
 
   // both functions are written in JavaScript to circumvent PHP's "header already sent" error
-  public static function redirect($url)
+  public static function redirect($path)
   {
-    echo "<script> location.replace(\"$url\"); </script>";
+    echo "<script> location.replace('https://simpletables.xyz/$path'); </script>";
   }
   //
   public static function change_page_title($page)

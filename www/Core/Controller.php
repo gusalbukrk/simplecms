@@ -16,7 +16,7 @@ abstract class Controller
   {
     self::wrap(function () use ($method, $args) {
       if ($this->must_be_logged_in && !isset($_SESSION["user"])) {
-        \Utils::redirect("https://simpletables.xyz/login");
+        \Utils::redirect("login");
       }
 
       call_user_func_array(array($this, $method), $args); // call the method
