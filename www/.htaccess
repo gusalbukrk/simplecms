@@ -9,4 +9,5 @@ RewriteCond %{REQUEST_URI} !.*\.js$
 RewriteCond %{REQUEST_URI} !.*\.js.map$
 RewriteCond %{REQUEST_URI} !.*\.woff2$
 RewriteCond %{REQUEST_URI} !.*\.ttf$
+RewriteCond %{REQUEST_URI} !.*\.svg$
 RewriteRule .* /index.php
