@@ -59,7 +59,14 @@ class Controller extends \Core\Controller
 
   protected function records()
   {
+    $db = explode(".", $_SERVER["HTTP_HOST"])[0];
+    //
+    // remove leading slash and query string
+    $table = preg_replace(["/^\//", "/(\?(\w+=\w+&?)+)?$/"], "", $_SERVER["REQUEST_URI"]);
+
+    $records = $this->model->get_records($db, $table);
+
     \Utils::change_page_title("Table");
-    $this->view->records();
+    $this->view->records(["records" => $records]);
   }
 }
