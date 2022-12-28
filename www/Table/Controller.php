@@ -64,9 +64,10 @@ class Controller extends \Core\Controller
     // remove leading slash and query string
     $table = preg_replace(["/^\//", "/(\?(\w+=\w+&?)+)?$/"], "", $_SERVER["REQUEST_URI"]);
 
+    $schema = $this->model->get_columns_schema($db, $table);
     $records = $this->model->get_records($db, $table);
 
     \Utils::change_page_title("Table");
-    $this->view->records(["records" => $records]);
+    $this->view->records(["schema" => $schema, "records" => $records]);
   }
 }

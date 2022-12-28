@@ -108,4 +108,12 @@ class Model extends \Core\Model
 
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
+
+  public function get_columns_schema($db, $table)
+  {
+    $stmt = $this->conn->prepare("SHOW COLUMNS FROM $db.$table");
+    $stmt->execute();
+
+    return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+  }
 }
