@@ -25,7 +25,7 @@
               <form class="me-2" method="post">
                 <input type="hidden" name="db" value="<?= $db ?>">
                 <input type="hidden" name="role" value="<?= $role->name ?>">
-                <input class="w-100 border-0 bg-transparent text-dark" type="text" name="name" value="<?= $db ?>" disabled>
+                <input class="w-100 border-0 bg-transparent text-dark" type="text" name="new_name" value="<?= $db ?>" disabled>
                 <input type="hidden" name="action" value="rename">
               </form>
             </td>
@@ -58,7 +58,7 @@
         for (let i = 1; i <= tbody.children.length; i++) {
           const row = tbody.querySelector(`tr:nth-child(${i})`);
 
-          const input = row.querySelector('td:nth-child(2) form input[name="name"]');
+          const input = row.querySelector('td:nth-child(2) input[name="new_name"]');
           const button = row.querySelector('td:nth-child(4) button[value="rename"]');
 
           const inputValueBak = input.value;

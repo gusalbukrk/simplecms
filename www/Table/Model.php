@@ -79,17 +79,17 @@ class Model extends \Core\Model
     return $tables;
   }
 
-  public function rename_database($old, $new)
+  public function rename_db($db, $new_name)
   {
-    $this->create_db($new);
+    $this->create_db($new_name);
 
-    // move all tables in $old to $new
-    $tables = $this->get_all_tables_from_db($old);
+    // move all tables in $db to $new_name
+    $tables = $this->get_all_tables_from_db($db);
     foreach ($tables as $table) {
-      $this->conn->exec("RENAME TABLE $old.$table TO $new.$table");
+      $this->conn->exec("RENAME TABLE $db.$table TO $new_name.$table");
     }
 
-    $this->delete_db($old);
+    $this->delete_db($db);
   }
 
   // return role integer (check Roles enum)
@@ -115,5 +115,20 @@ class Model extends \Core\Model
     $stmt->execute();
 
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+  }
+
+  public function create_table($db, $table)
+  {
+    $this->conn->exec("CREATE TABLE $db.$table (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY (id))");
+  }
+
+  public function rename_table($db, $table, $new_name)
+  {
+    $this->conn->exec("RENAME TABLE $db.$table TO $db.$new_name");
+  }
+
+  public function delete_table($db, $table)
+  {
+    $this->conn->exec("DROP TABLE $db.$table");
   }
 }

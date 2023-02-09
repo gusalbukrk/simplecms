@@ -25,7 +25,7 @@ class Controller extends \Core\Controller
         $this->model->create_db($_POST["db"], true);
       } else if (isset($_POST["role"]) && $_POST["role"] === "Admin") { // only admins can rename or delete databases
         if ($action === "rename") {
-          $this->model->rename_database($_POST["db"], $_POST["name"]);
+          $this->model->rename_db($_POST["db"], $_POST["new_name"]);
         } else if ($action === "delete") {
           $this->model->delete_db($_POST["db"]);
         }
@@ -44,8 +44,22 @@ class Controller extends \Core\Controller
     $exists = $this->model->db_exists($db);
 
     if ($exists) {
-      $tables = $this->model->get_all_tables_from_db($db);
+      if (isset($_POST["action"])) {
+        $action = $_POST["action"];
+
+        if ($action === "create") {
+          $this->model->create_table($db, $_POST["table"]);
+        } else if (isset($_POST["role"]) && $_POST["role"] === "Admin") { // only admins can rename or delete tables
+          if ($action === "rename") {
+            $this->model->rename_table($db, $_POST["table"], $_POST["new_name"]);
+          } else if ($action === "delete") {
+            $this->model->delete_table($db, $_POST["table"]);
+          }
+        }
+      }
+
       $role = $this->model->get_db_user($db, $_SESSION["user"]);
+      $tables = $this->model->get_all_tables_from_db($db);
     }
 
     \Utils::change_page_title("$db database");
