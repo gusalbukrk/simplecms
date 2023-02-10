@@ -19,8 +19,10 @@ session_start();
 <body class="container pt-4">
   <header class="d-flex justify-content-between align-items-center mb-5">
     <h1 class="fs-3 mb-0 flex-grow-1">
-      <img class="me-2" src="logo.svg" alt="icon" style="height: 50px;">
-      <a class="text-dark" href="https://simpletables.xyz">simpletables.xyz</a>
+      <a class="text-dark" href="https://simpletables.xyz">
+        <img class="me-2" src="logo.svg" alt="icon" style="height: 50px;">
+        simpletables.xyz
+      </a>
     </h1>
     <div class="flex-grow-1 text-end">
       <!-- using absolute instead of relative links because of subdomains -->

@@ -72,7 +72,10 @@ class Model extends \Core\Model
 
   public function get_all_tables_from_db($db)
   {
-    $stmt = $this->conn->prepare("SHOW TABLES FROM $db");
+    $stmt = $this->conn->prepare(
+      // exclude user table because it's not an user-created table
+      "SHOW TABLES FROM $db WHERE tables_in_$db NOT LIKE 'user'"
+    );
     $stmt->execute();
     $tables = $stmt->fetchAll(\PDO::FETCH_COLUMN);
 
@@ -130,5 +133,14 @@ class Model extends \Core\Model
   public function delete_table($db, $table)
   {
     $this->conn->exec("DROP TABLE $db.$table");
+  }
+
+  public function table_exists($db, $table)
+  {
+    $stmt = $this->conn->prepare("SHOW TABLES FROM $db LIKE ?");
+    $stmt->execute([$table]);
+
+    // $stmt->fetch returns false if no record was found
+    return $stmt->fetch(\PDO::FETCH_COLUMN) !== false;
   }
 }

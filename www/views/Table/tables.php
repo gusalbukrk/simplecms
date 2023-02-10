@@ -1,9 +1,11 @@
-<?php if (!$exists) : ?>
+<?php if (!$db_exists) : ?>
   <h4>Database does not exist</h4>
 <?php else : ?>
   <h4 class="mb-3 fw-normal">Database: <b><?= ucfirst($db) ?></b></h4>
   <h6 class="mb-4"><span class="fw-normal">Role</span>: <?= $role->name ?></h6>
-  <?php if (!is_null($tables)) : ?>
+  <?php if (empty($tables)) : ?>
+    <p class="fw-bold mb-3">No tables found.</p>
+  <?php else : ?>
     <table id="tables" class="table table-hover table-borderless container m-0 max-w-350 mb-3">
       <thead>
         <tr class="row mx-0">
@@ -79,8 +81,6 @@
         }
       })()
     </script>
-  <?php else : ?>
-    <p class="fw-bold mb-3">No databases found.</p>
   <?php endif; ?>
   <form class="max-w-350 d-flex" method="post">
     <input class="form-control-sm flex-fill me-3 border-dark border-opacity-75 rounded" type="text" name="table" style="padding: 3px" pattern="\w+" required>
