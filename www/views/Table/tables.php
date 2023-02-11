@@ -82,8 +82,42 @@
       })()
     </script>
   <?php endif; ?>
-  <form class="max-w-350 d-flex" method="post">
-    <input class="form-control-sm flex-fill me-3 border-dark border-opacity-75 rounded" type="text" name="table" style="padding: 3px" pattern="\w+" required>
+  <form id="createForm" class="max-w-350" method="post">
+    <div class="mb-3">
+      <input type="text" name="table" pattern="\w+" placeholder="table name" required>
+    </div>
+    <div id="fields"></div> <!-- fields will be inserted inside here -->
+    <div class="mb-3">
+      <!-- not using button element because pressing enter would trigger this instead of submit -->
+      <div id="addButton" class="btn">+</div>
+    </div>
     <input class="btn btn-primary flex-fill btn-sm fw-bold" type="submit" name="action" value="create">
   </form>
+  <template id="field"> <!-- field input template -->
+    <div class="mb-3">
+      <input type="text" name="" pattern="\w+" placeholder="field name" required>
+      <select name="">
+        <option value="text">Text</option>
+        <option value="number">Number</option>
+      </select>
+    </div>
+  </template>
+  <script>
+    function insertNewField() {
+      const fields = document.querySelector('form#createForm #fields');
+      const index = fields.children.length; // count the current number of fields
+
+      const element = document.querySelector('template#field').content.cloneNode(true);
+      element.querySelector('input[type="text"]').setAttribute('name', `fields[${index}][]`);
+      element.querySelector('select').setAttribute('name', `fields[${index}][]`);
+
+      // insert field inside div#fields wrapper
+      fields.appendChild(element);
+    }
+
+    document.getElementById('addButton').addEventListener('click', e => {
+      e.preventDefault();
+      insertNewField();
+    });
+  </script>
 <?php endif; ?>
