@@ -120,9 +120,21 @@ class Model extends \Core\Model
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
 
-  public function create_table($db, $table)
+  public function create_table($db, $table, $fields)
   {
-    $this->conn->exec("CREATE TABLE $db.$table (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY (id))");
+    $types = [
+      "text" => "VARCHAR(255)",
+      "number" => "INT",
+    ];
+
+    $fields_str = preg_replace("/,\\s$/", "", array_reduce($fields, function ($acc, $field) use ($types) {
+      // each $field has 2 indexed columns representing, respectively: name and type
+      return $acc . $field[0] . " " . $types[$field[1]] . " NOT NULL, ";
+    }, ""));
+
+    $statement = "CREATE TABLE $db.$table ( $fields_str, PRIMARY KEY (" . $fields[0][0] . ") )";
+
+    $this->conn->exec($statement);
   }
 
   public function rename_table($db, $table, $new_name)

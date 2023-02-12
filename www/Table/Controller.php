@@ -48,7 +48,10 @@ class Controller extends \Core\Controller
         $action = $_POST["action"];
 
         if ($action === "create") {
-          $this->model->create_table($db, $_POST["table"]);
+          // $_POST["fields"] is an 2D array
+          // its inner arrays are of the type indexed and contain 2 columns: name and type
+          // each (inner array) represents a field in the table to be created
+          $this->model->create_table($db, $_POST["table"], $_POST["fields"]);
         } else if (isset($_POST["role"]) && $_POST["role"] === "Admin") { // only admins can rename or delete tables
           if ($action === "rename") {
             $this->model->rename_table($db, $_POST["table"], $_POST["new_name"]);
