@@ -95,8 +95,8 @@
   </form>
   <template id="field"> <!-- field input template -->
     <div class="mb-3">
-      <input type="text" name="" pattern="\w+" placeholder="field name" required>
-      <select name="">
+      <input type="text" pattern="\w+" placeholder="field name" required>
+      <select>
         <option value="text">Text</option>
         <option value="number">Number</option>
       </select>
@@ -108,8 +108,8 @@
       const index = fields.children.length; // count the current number of fields
 
       const element = document.querySelector('template#field').content.cloneNode(true);
-      element.querySelector('input[type="text"]').setAttribute('name', `fields[${index}][]`);
-      element.querySelector('select').setAttribute('name', `fields[${index}][]`);
+      element.querySelector('input[type="text"]').setAttribute('name', `fields[${index}][name]`);
+      element.querySelector('select').setAttribute('name', `fields[${index}][type]`);
 
       // insert field inside div#fields wrapper
       fields.appendChild(element);

@@ -128,11 +128,10 @@ class Model extends \Core\Model
     ];
 
     $fields_str = preg_replace("/,\\s$/", "", array_reduce($fields, function ($acc, $field) use ($types) {
-      // each $field has 2 indexed columns representing, respectively: name and type
-      return $acc . $field[0] . " " . $types[$field[1]] . " NOT NULL, ";
+      return $acc . $field["name"] . " " . $types[$field["type"]] . " NOT NULL, ";
     }, ""));
 
-    $statement = "CREATE TABLE $db.$table ( $fields_str, PRIMARY KEY (" . $fields[0][0] . ") )";
+    $statement = "CREATE TABLE $db.$table ( $fields_str, PRIMARY KEY (" . $fields[0]["name"] . ") )";
 
     $this->conn->exec($statement);
   }
