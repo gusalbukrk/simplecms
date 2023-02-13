@@ -75,10 +75,6 @@ class Controller extends \Core\Controller
 
   protected function records()
   {
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-
     $db = explode(".", $_SERVER["HTTP_HOST"])[0];
     $db_exists = $this->model->db_exists($db);
 
@@ -90,6 +86,14 @@ class Controller extends \Core\Controller
     $table_exists = $db_exists ? $this->model->table_exists($db, $table) : false;
 
     if ($db_exists && $table_exists) {
+      if (isset($_POST["action"])) {
+        $action = $_POST["action"];
+
+        if ($action === "create") {
+          $this->model->create_record($db, $table, $_POST["record"]);
+        }
+      }
+
       $schema = $this->model->get_columns_schema($db, $table);
       $records = $this->model->get_records($db, $table);
     }

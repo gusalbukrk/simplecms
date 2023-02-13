@@ -154,4 +154,16 @@ class Model extends \Core\Model
     // $stmt->fetch returns false if no record was found
     return $stmt->fetch(\PDO::FETCH_COLUMN) !== false;
   }
+
+  // function relies on the fact that the fields in $record are preserved on the correct order
+  // they've been fetched using `SHOW COLUMNS`, looped in JS and then dynamically layered in the form
+  public function create_record($db, $table, $record)
+  {
+    $stmt = $this->conn->prepare(
+      "INSERT INTO $db.$table VALUES (" .
+        preg_replace("/, $/", "", str_repeat("?, ", count($record))) .
+        ")"
+    );
+    $stmt->execute(array_values($record));
+  }
 }

@@ -53,7 +53,7 @@
 
         const input = document.createElement('input');
         input.type = types[column.Type.replace(/\(\d+\)$/, '')];
-        input.name = column.Field;
+        input.name = `record[${column.Field}]`;
         input.setAttribute('form', 'createForm');
 
         cell.appendChild(input);
