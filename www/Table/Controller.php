@@ -75,6 +75,10 @@ class Controller extends \Core\Controller
 
   protected function records()
   {
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+
     $db = explode(".", $_SERVER["HTTP_HOST"])[0];
     $db_exists = $this->model->db_exists($db);
 
