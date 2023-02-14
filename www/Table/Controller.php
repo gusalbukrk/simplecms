@@ -90,7 +90,9 @@ class Controller extends \Core\Controller
         $action = $_POST["action"];
 
         if ($action === "create") {
-          $this->model->create_record($db, $table, $_POST["record"]);
+          $this->model->create_record($_POST["db"], $_POST["table"], $_POST["record"]);
+        } else if ($action === "delete") {
+          $this->model->delete_record($_POST["db"], $_POST["table"], $_POST["record"]);
         }
       }
 

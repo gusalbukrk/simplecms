@@ -166,4 +166,17 @@ class Model extends \Core\Model
     );
     $stmt->execute(array_values($record));
   }
+
+  public function delete_record($db, $table, $record)
+  {
+    $stmt = $this->conn->prepare(
+      "DELETE FROM $db.$table WHERE " .
+        // if $record would be used instead of array_keys, it wouldn't be possible to access the key
+        preg_replace("/ AND $/", "", array_reduce(array_keys($record), function ($acc, $name) {
+          return $acc . "$name = ? AND ";
+        }, "")) .
+        "LIMIT 1"
+    );
+    $stmt->execute(array_values($record));
+  }
 }

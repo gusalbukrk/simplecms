@@ -10,20 +10,36 @@
   <table id="records" class="table" data-schema="<?= htmlspecialchars(json_encode($schema)) ?>">
     <thead>
       <tr>
+        <th></th>
         <?php foreach ($schema as $column) : ?>
           <th class="text-capitalize"><?= $column["Field"] ?></th>
         <?php endforeach; ?>
       </tr>
     </thead>
     <tbody>
-      <?php foreach ($records as $row) : ?>
+      <?php foreach ($records as $index => $record) : ?>
         <tr>
-          <?php foreach ($row as $field) : ?>
+          <td class="text-center">
+            <!--
+              form can be placed inside td but not inside table or tr
+              because a form per row is needed, form attribute will be used to associate inputs w/ form
+            -->
+            <form id="<?= "form-record-$index" ?>" method="post">
+              <input type="hidden" name="db" value="<?= $db ?>">
+              <input type="hidden" name="table" value="<?= $table ?>">
+              <?php foreach ($record as $name => $value) : ?>
+                <input type="hidden" name="record[<?= $name ?>]" value="<?= $value ?>">
+              <?php endforeach; ?>
+            </form>
+            <button form="<?= "form-record-$index" ?>" name="action" value="delete">
+              <i class="fa-solid fa-trash text-danger"></i>
+            </button>
+          </td>
+          <?php foreach ($record as $field) : ?>
             <td><?= $field ?></td>
           <?php endforeach; ?>
         </tr>
       <?php endforeach; ?>
-      <!-- form can't go inside table or tr, instead use form attribute to associate inputs w/ form -->
       <form id="createForm" method="post">
         <input type="hidden" name="db" value="<?= $db ?>">
         <input type="hidden" name="table" value="<?= $table ?>">
@@ -47,6 +63,10 @@
       button.disabled = true; // only allow one row to be added at a time
 
       const row = document.createElement('tr');
+
+      // first column is where action buttons are placed
+      const emptyCell = document.createElement('td');
+      row.appendChild(emptyCell);
 
       schema.forEach(column => {
         const cell = document.createElement('td');
