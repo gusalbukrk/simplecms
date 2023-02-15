@@ -70,11 +70,11 @@ class Model extends \Core\Model
     return $this->conn->exec("DROP DATABASE $db");
   }
 
-  public function get_all_tables_from_db($db)
+  // exclude user table it's default because it's not an user-created table
+  public function get_all_tables_from_db($db, $exclude_user = true)
   {
     $stmt = $this->conn->prepare(
-      // exclude user table because it's not an user-created table
-      "SHOW TABLES FROM $db WHERE tables_in_$db NOT LIKE 'user'"
+      "SHOW TABLES FROM $db" . ($exclude_user ? " WHERE tables_in_$db NOT LIKE 'user'" : "")
     );
     $stmt->execute();
     $tables = $stmt->fetchAll(\PDO::FETCH_COLUMN);
@@ -87,7 +87,7 @@ class Model extends \Core\Model
     $this->create_db($new_name);
 
     // move all tables in $db to $new_name
-    $tables = $this->get_all_tables_from_db($db);
+    $tables = $this->get_all_tables_from_db($db, false);
     foreach ($tables as $table) {
       $this->conn->exec("RENAME TABLE $db.$table TO $new_name.$table");
     }
