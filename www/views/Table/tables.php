@@ -89,14 +89,15 @@
     <div id="fields"></div> <!-- fields will be inserted inside here -->
     <div class="mb-3">
       <!-- not using button element because pressing enter would trigger this instead of submit -->
-      <div id="addButton" class="btn">+</div>
+      <div id="addButton" class="btn fs-5">+</div>
     </div>
     <input class="btn btn-primary flex-fill btn-sm fw-bold" type="submit" name="action" value="create">
   </form>
   <template id="field"> <!-- field input template -->
-    <div class="mb-3">
-      <input type="text" pattern="\w+" placeholder="field name" required>
-      <select>
+    <div class="mb-3 d-flex">
+      <input type="radio" name="primaryKey" value="" class="me-3" required>
+      <input type="text" name="" class="me-3" pattern="\w+" placeholder="field name" required>
+      <select name="">
         <option value="text">Text</option>
         <option value="number">Number</option>
       </select>
@@ -108,6 +109,7 @@
       const index = fields.children.length; // count the current number of fields
 
       const element = document.querySelector('template#field').content.cloneNode(true);
+      element.querySelector('input[type="radio"]').setAttribute('value', index);
       element.querySelector('input[type="text"]').setAttribute('name', `fields[${index}][name]`);
       element.querySelector('select').setAttribute('name', `fields[${index}][type]`);
 

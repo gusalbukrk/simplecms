@@ -120,7 +120,8 @@ class Model extends \Core\Model
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
 
-  public function create_table($db, $table, $fields)
+  // $primary_key is an index of the $fields array
+  public function create_table($db, $table, $fields, $primary_key)
   {
     $types = [
       "text" => "VARCHAR(255)",
@@ -131,7 +132,7 @@ class Model extends \Core\Model
       return $acc . $field["name"] . " " . $types[$field["type"]] . " NOT NULL, ";
     }, ""));
 
-    $statement = "CREATE TABLE $db.$table ( $fields_str, PRIMARY KEY (" . $fields[0]["name"] . ") )";
+    $statement = "CREATE TABLE $db.$table ( $fields_str, PRIMARY KEY (" . $fields[$primary_key]["name"] . ") )";
 
     $this->conn->exec($statement);
   }

@@ -48,7 +48,7 @@ class Controller extends \Core\Controller
         $action = $_POST["action"];
 
         if ($action === "create") {
-          $this->model->create_table($db, $_POST["table"], $_POST["fields"]);
+          $this->model->create_table($db, $_POST["table"], $_POST["fields"], $_POST["primaryKey"]);
         } else if (isset($_POST["role"]) && $_POST["role"] === "Admin") { // only admins can rename or delete tables
           if ($action === "rename") {
             $this->model->rename_table($db, $_POST["table"], $_POST["new_name"]);
