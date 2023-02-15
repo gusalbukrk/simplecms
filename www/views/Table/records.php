@@ -7,7 +7,13 @@
   <?php if (empty($records)) : ?>
     <h4>No records found.</h4>
   <?php endif; ?>
-  <?php $types = ["char" => "text", "varchar" => "text", "int" => "number",]; ?>
+  <?php
+  $types = ["char" => "text", "varchar" => "text", "int" => "number",];
+
+  $primary_field = current(array_filter($schema, function ($column) {
+    return $column["Key"] === "PRI";
+  }))["Field"];
+  ?>
   <table id="records" class="table">
     <thead>
       <tr>
@@ -26,6 +32,7 @@
             <form id="<?= "record-{$index}" ?>" method="post">
               <input type="hidden" name="db" value="<?= $db ?>">
               <input type="hidden" name="table" value="<?= $table ?>">
+              <input type="hidden" name="primaryField" value="<?= $primary_field ?>">
               <?php foreach ($record as $name => $value) : ?>
                 <input type="hidden" name="record[<?= $name ?>]" value="<?= $value ?>">
               <?php endforeach; ?>
@@ -34,7 +41,7 @@
               <i class="fa-solid fa-trash text-danger"></i>
             </button>
             <button class="editButton">
-              <i class="fa-solid fa-up-right-from-square"></i>
+              <i class="fa-solid fa-pen-to-square"></i>
             </button>
           </td>
           <?php foreach ($record as $name => $value) : ?>
