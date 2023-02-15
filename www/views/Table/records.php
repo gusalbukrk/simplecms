@@ -7,6 +7,7 @@
   <?php if (empty($records)) : ?>
     <h4>No records found.</h4>
   <?php endif; ?>
+  <?php $types = ["char" => "text", "varchar" => "text", "int" => "number",]; ?>
   <table id="records" class="table">
     <thead>
       <tr>
@@ -32,9 +33,16 @@
             <button form="<?= "record-{$index}" ?>" name="action" value="delete">
               <i class="fa-solid fa-trash text-danger"></i>
             </button>
+            <button class="editButton">
+              <i class="fa-solid fa-up-right-from-square"></i>
+            </button>
           </td>
-          <?php foreach ($record as $field) : ?>
-            <td><?= $field ?></td>
+          <?php foreach ($record as $name => $value) : ?>
+            <td>
+              <input type="<?= $types[preg_replace("/\(\d+\)$/", "", current(array_filter($schema, function ($column) use ($name) {
+                              return $column["Field"] === $name;
+                            }))["Type"])] ?>" name="<?= $name ?>" value="<?= $value ?>" class="border-0" readonly>
+            </td>
           <?php endforeach; ?>
         </tr>
       <?php endforeach; ?>
@@ -47,7 +55,6 @@
             <input type="submit" hidden name="action" value="create">
           </form>
         </td>
-        <?php $types = ["char" => "text", "varchar" => "text", "int" => "number",]; ?>
         <?php foreach ($schema as $column) : ?>
           <td>
             <input type="<?= $types[preg_replace("/\(\d+\)$/", "", $column["Type"])] ?>" name="record[<?= $column["Field"] ?>]" form="createForm">
@@ -65,5 +72,20 @@
       addRecordBtn.disabled = true; // only one row can be added at a time
       newRow.classList.remove('d-none');
     });
+
+    const editButtons = document.querySelectorAll('button.editButton');
+
+    editButtons.forEach(btn => {
+      btn.addEventListener('click', e => {
+        // array containing all the cells of the row
+        // except the first one, which contains the action buttons
+        const tds = Array.prototype.slice.call(e.currentTarget.parentElement.parentElement.children, 1);
+
+        tds.forEach(td => {
+          td.querySelector('input').readOnly = false;
+        });
+      });
+    });
   </script>
+
 <?php endif; ?>
