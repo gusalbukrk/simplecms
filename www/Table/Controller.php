@@ -48,7 +48,7 @@ class Controller extends \Core\Controller
         $action = $_POST["action"];
 
         if ($action === "create") {
-          $this->model->create_table($db, $_POST["table"], $_POST["fields"], $_POST["primaryKey"]);
+          $this->model->create_table($db, $_POST["table"], $_POST["fields"], $_POST["pkIndex"]);
         } else if (isset($_POST["role"]) && $_POST["role"] === "Admin") { // only admins can rename or delete tables
           if ($action === "rename") {
             $this->model->rename_table($db, $_POST["table"], $_POST["new_name"]);
@@ -91,8 +91,24 @@ class Controller extends \Core\Controller
 
         if ($action === "create") {
           $this->model->create_record($_POST["db"], $_POST["table"], $_POST["record"]);
+        } else if ($action === "update") {
+          $changed_fields = array_reduce(
+            array_keys($_POST["record"]), // $_POST["record"] and $_POST["inputs"] have the same keys
+            function ($acc, $cur) {
+              if ($_POST["record"][$cur] !== $_POST["inputs"][$cur]) {
+                $acc[$cur] = $_POST["inputs"][$cur];
+              }
+
+              return $acc;
+            },
+            []
+          );
+
+          if (!empty($changed_fields)) {
+            $this->model->update_record($_POST["db"], $_POST["table"], $_POST["pkName"], $_POST["record"][$_POST["pkName"]], $changed_fields);
+          }
         } else if ($action === "delete") {
-          $this->model->delete_record($_POST["db"], $_POST["table"], $_POST["primaryField"], $_POST["record"][$_POST["primaryField"]]);
+          $this->model->delete_record($_POST["db"], $_POST["table"], $_POST["pkName"], $_POST["record"][$_POST["pkName"]]);
         }
       }
 

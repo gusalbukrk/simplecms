@@ -10,7 +10,7 @@
   <?php
   $types = ["char" => "text", "varchar" => "text", "int" => "number",];
 
-  $primary_field = current(array_filter($schema, function ($column) {
+  $pk_name = current(array_filter($schema, function ($column) {
     return $column["Key"] === "PRI";
   }))["Field"];
   ?>
@@ -32,15 +32,18 @@
             <form id="<?= "record-{$index}" ?>" method="post">
               <input type="hidden" name="db" value="<?= $db ?>">
               <input type="hidden" name="table" value="<?= $table ?>">
-              <input type="hidden" name="primaryField" value="<?= $primary_field ?>">
+              <input type="hidden" name="pkName" value="<?= $pk_name ?>">
               <?php foreach ($record as $name => $value) : ?>
                 <input type="hidden" name="record[<?= $name ?>]" value="<?= $value ?>">
               <?php endforeach; ?>
             </form>
+            <!-- if form has multiple buttons/submit inputs, the first button is the one triggered
+            when the enter key is pressed -->
+            <input type="submit" form="<?= "record-{$index}" ?>" name="action" value="update" hidden>
             <button form="<?= "record-{$index}" ?>" name="action" value="delete">
               <i class="fa-solid fa-trash text-danger"></i>
             </button>
-            <button class="editButton">
+            <button class="updateButton">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
           </td>
@@ -48,12 +51,12 @@
             <td>
               <input type="<?= $types[preg_replace("/\(\d+\)$/", "", current(array_filter($schema, function ($column) use ($name) {
                               return $column["Field"] === $name;
-                            }))["Type"])] ?>" name="<?= $name ?>" value="<?= $value ?>" class="border-0" readonly>
+                            }))["Type"])] ?>" form="<?= "record-{$index}" ?>" name="inputs[<?= $name ?>]" value="<?= $value ?>" class="border-0" readonly>
             </td>
           <?php endforeach; ?>
         </tr>
       <?php endforeach; ?>
-      <!-- last row of the table (which is hidden by default) contains the form to add new record !-->
+      <!-- last row of the table (which is hidden by default) contains the form to add new record -->
       <tr id="newRow" class="d-none">
         <td>
           <form id="createForm" method="post">
@@ -74,15 +77,15 @@
   <script>
     const addRecordBtn = document.querySelector('button#addRecord');
     const newRow = document.querySelector('tr#newRow');
-
+    //
     addRecordBtn.addEventListener('click', e => {
       addRecordBtn.disabled = true; // only one row can be added at a time
       newRow.classList.remove('d-none');
     });
 
-    const editButtons = document.querySelectorAll('button.editButton');
-
-    editButtons.forEach(btn => {
+    const updateButtons = document.querySelectorAll('button.updateButton');
+    //
+    updateButtons.forEach(btn => {
       btn.addEventListener('click', e => {
         // array containing all the cells of the row
         // except the first one, which contains the action buttons
@@ -94,5 +97,4 @@
       });
     });
   </script>
-
 <?php endif; ?>

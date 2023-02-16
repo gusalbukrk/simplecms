@@ -95,7 +95,7 @@
   </form>
   <template id="field"> <!-- field input template -->
     <div class="mb-3 d-flex">
-      <input type="radio" name="primaryKey" value="" class="me-3" required>
+      <input type="radio" name="pkIndex" value="" class="me-3" required>
       <input type="text" name="" class="me-3" pattern="\w+" placeholder="field name" required>
       <select name="">
         <option value="text">Text</option>

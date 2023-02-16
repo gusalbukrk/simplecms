@@ -120,19 +120,18 @@ class Model extends \Core\Model
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
 
-  // $primary_key is an index of the $fields array
-  public function create_table($db, $table, $fields, $primary_key)
+  public function create_table($db, $table, $fields, $pk_index)
   {
     $types = [
       "text" => "VARCHAR(255)",
       "number" => "INT",
     ];
 
-    $fields_str = preg_replace("/,\\s$/", "", array_reduce($fields, function ($acc, $field) use ($types) {
+    $fields_str = preg_replace("/, $/", "", array_reduce($fields, function ($acc, $field) use ($types) {
       return $acc . $field["name"] . " " . $types[$field["type"]] . " NOT NULL, ";
     }, ""));
 
-    $statement = "CREATE TABLE $db.$table ( $fields_str, PRIMARY KEY (" . $fields[$primary_key]["name"] . ") )";
+    $statement = "CREATE TABLE $db.$table ( $fields_str, PRIMARY KEY (" . $fields[$pk_index]["name"] . ") )";
 
     $this->conn->exec($statement);
   }
@@ -168,9 +167,21 @@ class Model extends \Core\Model
     $stmt->execute(array_values($record));
   }
 
-  public function delete_record($db, $table, $primary_field, $primary_value)
+  public function delete_record($db, $table, $pk_name, $pk_value)
   {
-    $stmt = $this->conn->prepare("DELETE FROM $db.$table WHERE $primary_field = ?");
-    $stmt->execute([$primary_value]);
+    $stmt = $this->conn->prepare("DELETE FROM $db.$table WHERE $pk_name = ?");
+    $stmt->execute([$pk_value]);
+  }
+
+  public function update_record($db, $table, $pk_name, $pk_value, $changed_fields)
+  {
+    $stmt = $this->conn->prepare(
+      "UPDATE $db.$table SET " .
+        preg_replace("/, $/", "", array_reduce(array_keys($changed_fields), function ($str, $key) {
+          return $str . "$key = ?, ";
+        }, "")) .
+        " WHERE $pk_name = ?"
+    );
+    $stmt->execute([...array_values($changed_fields), $pk_value]);
   }
 }
