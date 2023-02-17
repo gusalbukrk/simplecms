@@ -16,7 +16,7 @@ session_start();
   <title>simpletables.xyz</title>
 </head>
 
-<body class="container pt-4">
+<body class="container py-4">
   <header class="d-flex justify-content-between align-items-center mb-5">
     <h1 class="fs-3 mb-0 flex-grow-1">
       <a class="text-dark" href="https://simpletables.xyz">

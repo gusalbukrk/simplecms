@@ -1,100 +1,92 @@
-<h2>Records</h2>
+<h2 class="fs-4 mb-5">
+  <a href="https://<?= $db ?>.simpletables.xyz" class="me-3"><i class="fa-solid fa-circle-arrow-left fs-3"></i></a>
+  <span class="p-1 me-1 bg-lighter-blue"><?= "$db / $table" ?></span>'<?= substr($table, -1) === "s" ? "" : "s" ?> records
+</h2>
 <?php if (!$db_exists) : ?>
-  <h4>Database not found.</h4>
+  <p class="fw-bold">Database doesn't exist.</p>
 <?php elseif (!$table_exists) : ?>
-  <h4>Table not found on database.</h4>
+  <p class="fw-bold">Table doesn't exist.</p>
 <?php else : ?>
   <?php if (empty($records)) : ?>
-    <h4>No records found.</h4>
-  <?php endif; ?>
-  <?php
-  $types = ["char" => "text", "varchar" => "text", "int" => "number",];
+    <p class="fw-bold mb-5">No records found.</p>
+  <?php else : ?>
+    <?php
+    $types = ["char" => "text", "varchar" => "text", "int" => "number",];
 
-  $pk_name = current(array_filter($schema, function ($column) {
-    return $column["Key"] === "PRI";
-  }))["Field"];
-  ?>
-  <table id="records" class="table">
-    <thead>
-      <tr>
-        <th></th>
-        <?php foreach ($schema as $column) : ?>
-          <th class="text-capitalize"><?= $column["Field"] ?></th>
-        <?php endforeach; ?>
-      </tr>
-    </thead>
-    <tbody>
-      <?php foreach ($records as $index => $record) : ?>
-        <tr>
-          <td class="text-center">
-            <!-- form can be placed inside td but not inside table or tr; because a form per row
-            is needed, form attribute will be used to associate inputs w/ form -->
-            <form id="<?= "record-{$index}" ?>" method="post">
-              <input type="hidden" name="db" value="<?= $db ?>">
-              <input type="hidden" name="table" value="<?= $table ?>">
-              <input type="hidden" name="pkName" value="<?= $pk_name ?>">
-              <?php foreach ($record as $name => $value) : ?>
-                <input type="hidden" name="record[<?= $name ?>]" value="<?= $value ?>">
-              <?php endforeach; ?>
-            </form>
-            <!-- if form has multiple buttons/submit inputs, the first button is the one triggered
-            when the enter key is pressed -->
-            <input type="submit" form="<?= "record-{$index}" ?>" name="action" value="update" hidden>
-            <button form="<?= "record-{$index}" ?>" name="action" value="delete">
-              <i class="fa-solid fa-trash text-danger"></i>
-            </button>
-            <button class="updateButton">
-              <i class="fa-solid fa-pen-to-square"></i>
-            </button>
-          </td>
-          <?php foreach ($record as $name => $value) : ?>
-            <td>
-              <input type="<?= $types[preg_replace("/\(\d+\)$/", "", current(array_filter($schema, function ($column) use ($name) {
-                              return $column["Field"] === $name;
-                            }))["Type"])] ?>" form="<?= "record-{$index}" ?>" name="inputs[<?= $name ?>]" value="<?= $value ?>" class="border-0" readonly>
-            </td>
+    $pk_name = current(array_filter($schema, function ($column) {
+      return $column["Key"] === "PRI";
+    }))["Field"];
+    ?>
+    <table id="records" class="table table-hover mb-5">
+      <thead>
+        <tr class="row g-0">
+          <th class="col"></th>
+          <?php foreach ($schema as $column) : ?>
+            <th class="col text-capitalize"><?= $column["Field"] ?></th>
           <?php endforeach; ?>
         </tr>
-      <?php endforeach; ?>
-      <!-- last row of the table (which is hidden by default) contains the form to add new record -->
-      <tr id="newRow" class="d-none">
-        <td>
-          <form id="createForm" method="post">
-            <input type="hidden" name="db" value="<?= $db ?>">
-            <input type="hidden" name="table" value="<?= $table ?>">
-            <input type="submit" hidden name="action" value="create">
-          </form>
-        </td>
-        <?php foreach ($schema as $column) : ?>
-          <td>
-            <input type="<?= $types[preg_replace("/\(\d+\)$/", "", $column["Type"])] ?>" name="record[<?= $column["Field"] ?>]" form="createForm">
-          </td>
+      </thead>
+      <tbody>
+        <?php foreach ($records as $index => $record) : ?>
+          <tr class="row g-0">
+            <td class="col d-flex justify-content-center align-items-center">
+              <!-- form can be placed inside td but not inside table or tr; because a form per row
+            is needed, form attribute will be used to associate inputs w/ form -->
+              <form id="<?= "record-{$index}" ?>" method="post">
+                <input type="hidden" name="db" value="<?= $db ?>">
+                <input type="hidden" name="table" value="<?= $table ?>">
+                <input type="hidden" name="pkName" value="<?= $pk_name ?>">
+                <?php foreach ($record as $name => $value) : ?>
+                  <input type="hidden" name="record[<?= $name ?>]" value="<?= $value ?>">
+                <?php endforeach; ?>
+                <!-- if form has multiple buttons/submit inputs, the first button
+              is the one triggered when the enter key is pressed -->
+                <input type="submit" form="<?= "record-{$index}" ?>" name="action" value="update" hidden>
+              </form>
+              <button class="updateButton btn p-0 me-3"><i class="fa-solid fa-pen-to-square text-orange fs-1dot125"></i></button>
+              <button form="<?= "record-{$index}" ?>" class="btn p-0" name="action" value="delete">
+                <i class="fa-solid fa-trash text-danger fs-1dot125"></i>
+              </button>
+            </td>
+            <?php foreach ($record as $name => $value) : ?>
+              <td class="col">
+                <input type="<?= $types[preg_replace("/\(\d+\)$/", "", current(array_filter($schema, function ($column) use ($name) {
+                                return $column["Field"] === $name;
+                              }))["Type"])] ?>" form="<?= "record-{$index}" ?>" name="inputs[<?= $name ?>]" value="<?= $value ?>" class="border-0 w-100 bg-transparent text-dark" disabled>
+              </td>
+            <?php endforeach; ?>
+          </tr>
         <?php endforeach; ?>
-      </tr>
-    </tbody>
-  </table>
-  <button id="addRecord" class="btn btn-primary">Add</button>
+      </tbody>
+    </table>
+  <?php endif; ?>
+  <form class="max-w-350" method="post">
+    <input type="hidden" name="db" value="<?= $db ?>">
+    <input type="hidden" name="table" value="<?= $table ?>">
+    <?php foreach ($schema as $column) : ?>
+      <div class="mb-3">
+        <label for="<?= $column["Field"] ?>Input" class="form-label fs-dot9 fw-bold text-dark-gray"><?= ucfirst($column["Field"]) ?></label>
+        <input id="<?= $column["Field"] ?>Input" type="<?= $types[preg_replace("/\(\d+\)$/", "", $column["Type"])] ?>" name="record[<?= $column["Field"] ?>]" class="form-control border-dark border-opacity-50 border-width-2">
+      </div>
+    <?php endforeach; ?>
+    <input class="btn btn-success fw-bold" type="submit" name="action" value="create">
+  </form>
   <script>
-    const addRecordBtn = document.querySelector('button#addRecord');
-    const newRow = document.querySelector('tr#newRow');
-    //
-    addRecordBtn.addEventListener('click', e => {
-      addRecordBtn.disabled = true; // only one row can be added at a time
-      newRow.classList.remove('d-none');
-    });
+    // iterate through every row of the table used to list the records
+    // in order to add the following event: when one of the rename buttons is clicked,
+    // focus on the first input of that respective row
+    document.querySelectorAll('table#records tbody tr').forEach(row => {
+      // get all inputs inside row, ignoring first column because it only contains action buttons
+      const inputs = row.querySelectorAll('td:not(:first-child) input');
 
-    const updateButtons = document.querySelectorAll('button.updateButton');
-    //
-    updateButtons.forEach(btn => {
-      btn.addEventListener('click', e => {
-        // array containing all the cells of the row
-        // except the first one, which contains the action buttons
-        const tds = Array.prototype.slice.call(e.currentTarget.parentElement.parentElement.children, 1);
-
-        tds.forEach(td => {
-          td.querySelector('input').readOnly = false;
+      row.querySelector('td:nth-child(1) button.updateButton').addEventListener('click', e => {
+        inputs.forEach(input => {
+          input.disabled = false;
         });
+
+        inputs[0].focus();
+        inputs[0].select();
       });
-    });
+    })
   </script>
 <?php endif; ?>

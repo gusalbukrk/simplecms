@@ -1,89 +1,79 @@
-<?php if (!isset($_SESSION["user"])) : ?>
-  <h4>Login or sign up to create tables</h4>
+<h2 class="fs-4 mb-5">
+  <?php $username = explode("@", $_SESSION["user"])[0]; ?>
+  <span class="p-1 me-1 bg-lighter-blue"><?= $username ?></span>'<?= substr($username, -1) === "s" ? "" : "s" ?> databases
+</h2>
+<?php if (empty($dbs)) : ?>
+  <p class="fw-bold mb-5">No databases found.</p>
 <?php else : ?>
-  <h4 class="mb-4 text-uppercase">Databases</h4>
-  <?php if ($dbs) : ?>
-    <table id="dbs" class="table table-hover table-borderless container m-0 max-w-350 mb-3">
-      <thead>
-        <tr class="row mx-0">
-          <th class="col-2"></th>
-          <th class="col-3">Name</th>
-          <th class="col-3">Role</th>
-          <th class="col-2"></th>
-          <th class="col-2"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($dbs as $db => $role) : ?>
-          <tr class="row mx-0">
-            <td class="col-2">
-              <a href="https://<?= $db ?>.simpletables.xyz">
-                <i class="fa-solid fa-up-right-from-square"></i>
-              </a>
-            </td>
-            <td class="col-3">
-              <form class="me-2" method="post">
-                <input type="hidden" name="db" value="<?= $db ?>">
-                <input type="hidden" name="role" value="<?= $role->name ?>">
-                <input class="w-100 border-0 bg-transparent text-dark" type="text" name="new_name" value="<?= $db ?>" disabled>
-                <input type="hidden" name="action" value="rename">
-              </form>
-            </td>
-            <td class="col-3"><?= strtolower($role->name) ?></td>
-            <td class="col-2">
-              <button class="btn m-0 p-0 border-0" name="action" value="rename" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
-                <i class="fa-solid fa-pen-to-square"></i>
+  <table id="dbs" class="table table-hover container mb-5">
+    <thead>
+      <tr class="row g-0">
+        <th class="col"></th>
+        <th class="col">Name</th>
+        <th class="col">Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($dbs as $db => $role) : ?>
+        <tr class="row g-0">
+          <td class="col d-flex justify-content-center align-items-center">
+            <a href="https://<?= $db ?>.simpletables.xyz" class="me-3">
+              <i class="fa-solid fa-up-right-from-square fs-1dot125"></i>
+            </a>
+            <button class="btn p-0 me-3 border-0" name="action" value="rename" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
+              <i class="fa-solid fa-pen-to-square text-orange fs-1dot125"></i>
+            </button>
+            <form method="post">
+              <input type="hidden" name="db" value="<?= $db ?>">
+              <input type="hidden" name="role" value="<?= $role->name ?>">
+              <button class="btn m-0 p-0 border-0" name="action" value="delete" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
+                <i class="fa-solid fa-trash text-danger fs-1dot125"></i>
               </button>
-            </td>
-            <td class="col-2 text-center">
-              <form method="post">
-                <input type="hidden" name="db" value="<?= $db ?>">
-                <input type="hidden" name="role" value="<?= $role->name ?>">
-                <button class="btn m-0 p-0 border-0" name="action" value="delete" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
-                  <i class="fa-solid fa-trash text-danger"></i>
-                </button>
-              </form>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-    <script>
-      // iterate through every row of the table used to list the databases
-      // in order to add the following event: when one of the rename buttons is clicked,
-      // focus and select the database name input of that respective row
-      (function() {
-        const tbody = document.querySelector('table#dbs tbody');
+            </form>
+          </td>
+          <td class="col">
+            <form class="me-2" method="post">
+              <input type="hidden" name="db" value="<?= $db ?>">
+              <input type="hidden" name="role" value="<?= $role->name ?>">
+              <input class="w-100 border-0 bg-transparent text-dark" type="text" name="new_name" value="<?= $db ?>" disabled>
+              <input type="hidden" name="action" value="rename">
+            </form>
+          </td>
+          <td class="col"><?= strtolower($role->name) ?></td>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+  <script>
+    // iterate through every row of the table used to list the databases
+    // in order to add the following event: when one of the rename buttons is clicked,
+    // focus on the database name input of that respective row
+    document.querySelectorAll('table#dbs tbody tr').forEach(row => {
+      const button = row.querySelector('td:nth-child(1) button[value="rename"]');
+      const input = row.querySelector('td:nth-child(2) input[name="new_name"]');
 
-        for (let i = 1; i <= tbody.children.length; i++) {
-          const row = tbody.querySelector(`tr:nth-child(${i})`);
+      const inputValueBak = input.value;
 
-          const input = row.querySelector('td:nth-child(2) input[name="new_name"]');
-          const button = row.querySelector('td:nth-child(4) button[value="rename"]');
+      button.addEventListener('click', e => {
+        input.removeAttribute('disabled');
+        input.focus();
+        input.select();
+      });
 
-          const inputValueBak = input.value;
+      // handle input focusout
+      input.addEventListener('focusout', e => {
+        input.setAttribute('disabled', '');
 
-          button.addEventListener('click', e => {
-            input.removeAttribute('disabled');
-            input.focus();
-            input.select();
-          });
-
-          // additionally, handle input focusout
-          input.addEventListener('focusout', e => {
-            input.setAttribute('disabled', '');
-
-            // if focusout, form wasn't submitted; therefore, name hasn't changed
-            input.value = inputValueBak;
-          });
-        }
-      })()
-    </script>
-  <?php else : ?>
-    <p class="fw-bold mb-3">No databases found.</p>
-  <?php endif; ?>
-  <form class="max-w-350 d-flex" method="post">
-    <input class="form-control-sm flex-fill me-3 border-dark border-opacity-75 rounded" type="text" name="db" style="padding: 3px" pattern="\w+" required>
-    <input class="btn btn-primary flex-fill btn-sm fw-bold" type="submit" name="action" value="create">
-  </form>
+        // if focusout, form wasn't submitted; therefore, name hasn't changed
+        input.value = inputValueBak;
+      });
+    })
+  </script>
 <?php endif; ?>
+<form class="max-w-350" method="post">
+  <div class="mb-3">
+    <label for="dbNameInput" class="form-label fs-dot9 fw-bold text-dark-gray">Database name</label>
+    <input type="text" id="dbNameInput" name="db" class="form-control border-dark border-opacity-50 border-width-2" pattern="\w+" required>
+  </div>
+  <input class="btn btn-success fw-bold" type="submit" name="action" value="create">
+</form>

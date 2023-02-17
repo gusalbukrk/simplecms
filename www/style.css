@@ -14,10 +14,30 @@ header #user {
   font-size: .8rem !important;
 }
 
-.max-w-250 {
-  max-width: 250px;
-}
-
 .max-w-350 {
   max-width: 350px;
+}
+
+.fs-1dot125 { /* halfway between bootstrap's fs-5 (1.25rem) and fs-6 (1rem) */
+  font-size: 1.125rem;
+}
+
+.bg-lighter-blue {
+  background-color: rgba(13, 110, 253, .3); /* bootstrap's --bs-link-color (#0d6efd) */
+}
+
+.text-orange {
+  color: #fd7e14; /* bootstrap's --bs-orange */
+}
+
+.fs-dot9 {
+  font-size: .9rem;
+}
+
+.text-dark-gray {
+  color: #32393f;
+}
+
+.border-width-2 {
+  border-width: 2px;
 }

@@ -1,29 +1,39 @@
+<h2 class="fs-4 mb-5">
+  <a href="https://simpletables.xyz" class="me-3"><i class="fa-solid fa-circle-arrow-left fs-3"></i></a>
+  <span class="p-1 me-1 bg-lighter-blue"><?= $db ?></span>'<?= substr($db, -1) === "s" ? "" : "s" ?> tables
+</h2>
 <?php if (!$db_exists) : ?>
-  <h4>Database does not exist</h4>
+  <p class="fw-bold">Database doesn't exist.</p>
 <?php else : ?>
-  <h4 class="mb-3 fw-normal">Database: <b><?= ucfirst($db) ?></b></h4>
-  <h6 class="mb-4"><span class="fw-normal">Role</span>: <?= $role->name ?></h6>
   <?php if (empty($tables)) : ?>
-    <p class="fw-bold mb-3">No tables found.</p>
+    <p class="fw-bold mb-5">No tables found.</p>
   <?php else : ?>
-    <table id="tables" class="table table-hover table-borderless container m-0 max-w-350 mb-3">
+    <table id="tables" class="table table-hover container mb-5">
       <thead>
-        <tr class="row mx-0">
-          <th class="col-2"></th>
-          <th class="col-6">Name</th>
-          <th class="col-2"></th>
-          <th class="col-2"></th>
+        <tr class="row g-0">
+          <th class="col"></th>
+          <th class="col">Name</th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($tables as $table) : ?>
-          <tr class="row mx-0">
-            <td class="col-2">
-              <a href="https://<?= $db ?>.simpletables.xyz/<?= $table ?>">
-                <i class="fa-solid fa-up-right-from-square"></i>
+          <tr class="row g-0">
+            <td class="col d-flex justify-content-center align-items-center">
+              <a href="https://<?= $db ?>.simpletables.xyz/<?= $table ?>" class="me-3">
+                <i class="fa-solid fa-up-right-from-square fs-1dot125"></i>
               </a>
+              <button class="btn m-0 p-0 border-0 me-3" name="action" value="rename" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
+                <i class="fa-solid fa-pen-to-square text-orange fs-1dot125"></i>
+              </button>
+              <form method="post">
+                <input type="hidden" name="table" value="<?= $table ?>">
+                <input type="hidden" name="role" value="<?= $role->name ?>">
+                <button class="btn m-0 p-0 border-0" name="action" value="delete" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
+                  <i class="fa-solid fa-trash text-danger fs-1dot125"></i>
+                </button>
+              </form>
             </td>
-            <td class="col-6">
+            <td class="col">
               <form class="me-2" method="post">
                 <input type="hidden" name="table" value="<?= $table ?>">
                 <input type="hidden" name="role" value="<?= $role->name ?>">
@@ -31,76 +41,67 @@
                 <input type="hidden" name="action" value="rename">
               </form>
             </td>
-            <td class="col-2">
-              <button class="btn m-0 p-0 border-0" name="action" value="rename" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-            </td>
-            <td class="col-2 text-center">
-              <form method="post">
-                <input type="hidden" name="table" value="<?= $table ?>">
-                <input type="hidden" name="role" value="<?= $role->name ?>">
-                <button class="btn m-0 p-0 border-0" name="action" value="delete" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
-                  <i class="fa-solid fa-trash text-danger"></i>
-                </button>
-              </form>
-            </td>
           </tr>
         <?php endforeach; ?>
       </tbody>
     </table>
     <script>
-      // iterate through every row of the table used to list the databases
+      // iterate through every row of the table used to list the tables
       // in order to add the following event: when one of the rename buttons is clicked,
-      // focus and select the database name input of that respective row
-      (function() {
-        const tbody = document.querySelector('table#tables tbody');
+      // focus on the database name input of that respective row
+      document.querySelectorAll('table#tables tbody tr').forEach(row => {
+        const button = row.querySelector('td:nth-child(1) button[value="rename"]');
+        const input = row.querySelector('td:nth-child(2) input[name="new_name"]');
 
-        for (let i = 1; i <= tbody.children.length; i++) {
-          const row = tbody.querySelector(`tr:nth-child(${i})`);
+        const inputValueBak = input.value;
 
-          const input = row.querySelector('td:nth-child(2) input[name="new_name"]');
-          const button = row.querySelector('td:nth-child(3) button[value="rename"]');
+        button.addEventListener('click', e => {
+          input.removeAttribute('disabled');
+          input.focus();
+          input.select();
+        });
 
-          const inputValueBak = input.value;
+        // handle input focusout
+        input.addEventListener('focusout', e => {
+          input.setAttribute('disabled', '');
 
-          button.addEventListener('click', e => {
-            console.log('clicked');
-            input.removeAttribute('disabled');
-            input.focus();
-            input.select();
-          });
-
-          // additionally, handle input focusout
-          input.addEventListener('focusout', e => {
-            input.setAttribute('disabled', '');
-
-            // if focusout, form wasn't submitted; therefore, name hasn't changed
-            input.value = inputValueBak;
-          });
-        }
-      })()
+          // if focusout, form wasn't submitted; therefore, name hasn't changed
+          input.value = inputValueBak;
+        });
+      })
     </script>
   <?php endif; ?>
   <form id="createForm" class="max-w-350" method="post">
-    <div class="mb-3">
-      <input type="text" name="table" pattern="\w+" placeholder="table name" required>
+    <div class="mb-4">
+      <label for="tableNameInput" class="form-label fs-dot9 fw-bold text-dark-gray">Table name</label>
+      <input type="text" id="tableNameInput" name="table" class="form-control border-dark border-opacity-50 border-width-2" pattern="\w+" required>
     </div>
-    <div id="fields"></div> <!-- fields will be inserted inside here -->
-    <div class="mb-3">
-      <!-- not using button element because pressing enter would trigger this instead of submit -->
-      <div id="addButton" class="btn fs-5">+</div>
+    <div class="row mb-3 mx-0 fs-dot9 text-center fw-bold text-dark-gray">
+      <span class="col-2">PK</span>
+      <span class="col-6">Name</span>
+      <span class="col-4">Type</span>
     </div>
-    <input class="btn btn-primary flex-fill btn-sm fw-bold" type="submit" name="action" value="create">
+    <div id="fields" class="mb-4"></div> <!-- fields will be inserted inside here -->
+    <!-- not using button element because pressing enter would trigger this instead of submit -->
+    <div id="addButton" class="btn btn-light text-dark-gray me-1">
+      <i class="fa-solid fa-plus"></i>
+    </div>
+    <input class="btn btn-success fw-bold" type="submit" name="action" value="create">
   </form>
   <template id="field"> <!-- field input template -->
-    <div class="mb-3 d-flex">
-      <input type="radio" name="pkIndex" value="" class="me-3" required>
-      <input type="text" name="" class="me-3" pattern="\w+" placeholder="field name" required>
-      <select name="">
-        <option value="text">Text</option>
-        <option value="number">Number</option>
-      </select>
+    <div class="row mb-3 mx-0">
+      <div class="col-2 d-flex justify-content-center align-items-center">
+        <input type="radio" name="pkIndex" value="" class="form-check-input border-dark border-opacity-50 border-width-2" required>
+      </div>
+      <div class="col-6">
+        <input type="text" name="" class="w-100 form-control form-control-sm border-dark border-opacity-50 border-width-2" pattern="\w+" required>
+      </div>
+      <div class="col-4">
+        <select name="" class="form-select form-select-sm w-100 border-dark border-opacity-50 border-width-2">
+          <option value="text">Text</option>
+          <option value="number">Number</option>
+        </select>
+      </div>
     </div>
   </template>
   <script>
@@ -116,6 +117,8 @@
       // insert field inside div#fields wrapper
       fields.appendChild(element);
     }
+
+    insertNewField(); // table to be created must've at least one field
 
     document.getElementById('addButton').addEventListener('click', e => {
       e.preventDefault();
