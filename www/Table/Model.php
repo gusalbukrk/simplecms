@@ -20,15 +20,15 @@ class Model extends \Core\Model
 
     if ($create_user_table) { // create table inside database created above
       $this->conn->exec(
-        "CREATE TABLE $db.user (
+        "CREATE TABLE $db.users (
         email VARCHAR(50) NOT NULL,
         role TINYINT UNSIGNED NOT NULL,
-        FOREIGN KEY (email) REFERENCES simpletables.user(email)
+        FOREIGN KEY (email) REFERENCES simpletables.users(email)
         )"
       );
 
       // insert current user as admin in the newly created table
-      $stmt = $this->conn->prepare("INSERT INTO $db.user (email, role) VALUES (?, " . Roles::Admin->value . ")");
+      $stmt = $this->conn->prepare("INSERT INTO $db.users (email, role) VALUES (?, " . Roles::Admin->value . ")");
       $stmt->execute([$_SESSION["user"]]);
     }
   }
@@ -44,7 +44,7 @@ class Model extends \Core\Model
 
     while (($db = $stmt->fetchColumn()) !== false) {
       if (!in_array($db, $except)) {
-        $stmt2 = $this->conn->prepare("SELECT role FROM $db.user WHERE email = ?");
+        $stmt2 = $this->conn->prepare("SELECT role FROM $db.users WHERE email = ?");
         $stmt2->execute([$email]);
         $role = $stmt2->fetchColumn();
 
@@ -70,11 +70,11 @@ class Model extends \Core\Model
     return $this->conn->exec("DROP DATABASE $db");
   }
 
-  // exclude user table it's default because it's not an user-created table
-  public function get_all_tables_from_db($db, $exclude_user = true)
+  // exclude users table it's default because it's not an user-created table
+  public function get_all_tables_from_db($db, $exclude_users = true)
   {
     $stmt = $this->conn->prepare(
-      "SHOW TABLES FROM $db" . ($exclude_user ? " WHERE tables_in_$db NOT LIKE 'user'" : "")
+      "SHOW TABLES FROM $db" . ($exclude_users ? " WHERE tables_in_$db NOT LIKE 'users'" : "")
     );
     $stmt->execute();
     $tables = $stmt->fetchAll(\PDO::FETCH_COLUMN);
@@ -98,7 +98,7 @@ class Model extends \Core\Model
   // return role integer (check Roles enum)
   public function get_db_user($db, $email)
   {
-    $stmt = $this->conn->prepare("SELECT role FROM $db.user WHERE email = ?");
+    $stmt = $this->conn->prepare("SELECT role FROM $db.users WHERE email = ?");
     $stmt->execute([$email]);
 
     return Roles::from($stmt->fetchColumn());
