@@ -41,3 +41,11 @@ header #user {
 .border-width-2 {
   border-width: 2px;
 }
+
+.border-left-0 {
+  border-left: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
