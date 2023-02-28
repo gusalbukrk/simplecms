@@ -18,6 +18,8 @@ class Controller extends \Core\Controller
 
   protected function databases()
   {
+    $title = \Utils::pluralize(explode("@", $_SESSION["user"])[0]) . " databases";
+
     if (isset($_POST["action"])) {
       $action = $_POST["action"];
 
@@ -34,14 +36,16 @@ class Controller extends \Core\Controller
 
     $dbs = isset($_SESSION["user"]) ? $this->model->get_user_dbs($_SESSION["user"]) : [];
 
-    \Utils::change_page_title("Databases");
-    $this->view->databases(["dbs" => $dbs]);
+    \Utils::change_page_title($title);
+    $this->view->databases(["title" => $title, "dbs" => $dbs]);
   }
 
   protected function tables()
   {
     $db = explode(".", $_SERVER["HTTP_HOST"])[0];
     $db_exists = $this->model->db_exists($db);
+
+    $title = \Utils::pluralize($db) . " tables";
 
     if ($db_exists) {
       if (isset($_POST["action"])) {
@@ -62,9 +66,10 @@ class Controller extends \Core\Controller
       $tables = $this->model->get_all_tables_from_db($db);
     }
 
-    \Utils::change_page_title("$db database");
+    \Utils::change_page_title($title);
     $this->view->tables(array_merge(
       [
+        "title" => $title,
         "db" => $db,
         "db_exists" => $db_exists,
       ],
@@ -84,6 +89,8 @@ class Controller extends \Core\Controller
       $_SERVER["REQUEST_URI"]
     );
     $table_exists = $db_exists ? $this->model->table_exists($db, $table) : false;
+
+    $title = \Utils::pluralize("$db / $table") . " records";
 
     if ($db_exists && $table_exists) {
       if (isset($_POST["action"])) {
@@ -116,8 +123,9 @@ class Controller extends \Core\Controller
       $records = $this->model->get_records($db, $table);
     }
 
-    \Utils::change_page_title("$table table");
+    \Utils::change_page_title($title);
     $this->view->records([
+      "title" => $title,
       "db" => $db,
       "db_exists" => $db_exists,
       "table" => $table,

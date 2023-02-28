@@ -25,8 +25,7 @@ class Utils
   //
   public static function change_page_title($page)
   {
-    echo "<script> document.title = '$page · simpletables.xyz'; </script>";
-    // echo "<script> document.title = 'simpletables.xyz · $page'; </script>";
+    echo "<script> document.title = '" . addcslashes($page, "'") . " · simpletables.xyz'; </script>";
   }
 
   // generate random password
@@ -70,6 +69,6 @@ class Utils
 
   public static function pluralize($str)
   {
-    return substr($str, -1) === "s" ? "" : "s";
+    return "$str'" . (substr($str, -1) === "s" ? "" : "s");
   }
 }
