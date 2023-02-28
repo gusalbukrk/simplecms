@@ -67,4 +67,9 @@ class Utils
 
     return $mail->send();
   }
+
+  public static function pluralize($str)
+  {
+    return substr($str, -1) === "s" ? "" : "s";
+  }
 }

@@ -1,6 +1,6 @@
 <h2 class="fs-4 mb-5">
   <a href="https://simpletables.xyz" class="me-3"><i class="fa-solid fa-circle-arrow-left fs-3"></i></a>
-  <span class="p-1 me-1 bg-lighter-blue"><?= $db ?></span>'<?= substr($db, -1) === "s" ? "" : "s" ?> tables
+  <span class="p-1 me-1 bg-lighter-blue"><?= $db ?></span>'<?= \Utils::pluralize($db); ?> tables
 </h2>
 <?php if (!$db_exists) : ?>
   <p class="fw-bold">Database doesn't exist.</p>

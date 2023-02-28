@@ -1,6 +1,6 @@
 <h2 class="fs-4 mb-5">
   <?php $username = explode("@", $_SESSION["user"])[0]; ?>
-  <span class="p-1 me-1 bg-lighter-blue"><?= $username ?></span>'<?= substr($username, -1) === "s" ? "" : "s" ?> databases
+  <span class="p-1 me-1 bg-lighter-blue"><?= $username ?></span>'<?= \Utils::pluralize($username); ?> databases
 </h2>
 <?php if (empty($dbs)) : ?>
   <p class="fw-bold mb-5">No databases found.</p>
