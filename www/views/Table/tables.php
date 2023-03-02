@@ -1,7 +1,11 @@
-<h2 class="fs-4 mb-5">
-  <a href="https://simpletables.xyz" class="me-3"><i class="fa-solid fa-circle-arrow-left fs-3"></i></a>
-  <span class="p-1 me-1 bg-lighter-blue"><?= explode("'", $title)[0] ?></span>'<?= explode("'", $title)[1] ?>
-</h2>
+<div class="d-flex flex-wrap mb-5">
+  <a href="https://simpletables.xyz" class="me-3 mb-3">
+    <i class="fa-solid fa-circle-arrow-left fs-3"></i>
+  </a>
+  <h2 class="fs-4">
+    <span class="p-1 me-1 bg-lighter-blue"><?= explode("'", $title)[0] ?></span>'<?= explode("'", $title)[1] ?>
+  </h2>
+</div>
 <?php if (!$db_exists) : ?>
   <p class="fw-bold">Database doesn't exist.</p>
 <?php else : ?>
