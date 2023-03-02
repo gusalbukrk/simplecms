@@ -11,16 +11,16 @@
 <?php elseif (!$table_exists) : ?>
   <p class="fw-bold">Table doesn't exist.</p>
 <?php else : ?>
+  <?php
+  $types = ["char" => "text", "varchar" => "text", "int" => "number",];
+
+  $pk_name = current(array_filter($schema, function ($column) {
+    return $column["Key"] === "PRI";
+  }))["Field"];
+  ?>
   <?php if (empty($records)) : ?>
     <p class="fw-bold mb-5">No records found.</p>
   <?php else : ?>
-    <?php
-    $types = ["char" => "text", "varchar" => "text", "int" => "number",];
-
-    $pk_name = current(array_filter($schema, function ($column) {
-      return $column["Key"] === "PRI";
-    }))["Field"];
-    ?>
     <table id="records" class="table table-hover mb-5">
       <thead>
         <tr class="row g-0">
