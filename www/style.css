@@ -49,3 +49,7 @@ header #user {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.text-purple {
+  color: #6f42c1; /* bootstrap's --bs-purple */
+}

@@ -19,6 +19,9 @@
             <a href="https://<?= $db ?>.simpletables.xyz" class="me-3">
               <i class="fa-solid fa-up-right-from-square fs-1dot125"></i>
             </a>
+            <a href="https://<?= $db ?>.simpletables.xyz/users" class="me-3">
+              <i class="fa-solid fa-users fs-1dot125 text-purple"></i>
+            </a>
             <button class="btn p-0 me-3 border-0" name="action" value="rename" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
               <i class="fa-solid fa-pen-to-square text-orange fs-1dot125"></i>
             </button>
