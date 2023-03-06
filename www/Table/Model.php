@@ -23,6 +23,7 @@ class Model extends \Core\Model
         "CREATE TABLE $db.users (
         email VARCHAR(50) NOT NULL,
         role TINYINT UNSIGNED NOT NULL,
+        PRIMARY KEY (email),
         FOREIGN KEY (email) REFERENCES simpletables.users(email)
         )"
       );

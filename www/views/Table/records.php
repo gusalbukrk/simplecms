@@ -12,7 +12,7 @@
   <p class="fw-bold">Table doesn't exist.</p>
 <?php else : ?>
   <?php
-  $types = ["char" => "text", "varchar" => "text", "int" => "number",];
+  $types = ["char" => "text", "varchar" => "text", "int" => "number", "tinyint unsigned" => "number"];
 
   $pk_name = current(array_filter($schema, function ($column) {
     return $column["Key"] === "PRI";
