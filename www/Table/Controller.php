@@ -25,7 +25,7 @@ class Controller extends \Core\Controller
 
       if ($action === "create") {
         $this->model->create_db($_POST["db"], true);
-      } else if (isset($_POST["role"]) && $_POST["role"] === "Admin") { // only admins can rename or delete databases
+      } else if (isset($_POST["role"]) && $_POST["role"] === "admin") { // only admins can rename or delete databases
         if ($action === "rename") {
           $this->model->rename_db($_POST["db"], $_POST["new_name"]);
         } else if ($action === "delete") {
@@ -53,7 +53,7 @@ class Controller extends \Core\Controller
 
         if ($action === "create") {
           $this->model->create_table($db, $_POST["table"], $_POST["fields"], $_POST["pkIndex"]);
-        } else if (isset($_POST["role"]) && $_POST["role"] === "Admin") { // only admins can rename or delete tables
+        } else if (isset($_POST["role"]) && $_POST["role"] === "admin") { // only admins can rename or delete tables
           if ($action === "rename") {
             $this->model->rename_table($db, $_POST["table"], $_POST["new_name"]);
           } else if ($action === "delete") {

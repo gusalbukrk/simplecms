@@ -4,14 +4,6 @@ namespace Table;
 
 require_once __DIR__ . "/../Core/Model.php";
 
-// privilege levels
-enum Roles: int
-{
-  case Reader = 0;
-  case Editor = 1;
-  case Admin = 2;
-}
-
 class Model extends \Core\Model
 {
   public function create_db($db, $create_user_table = false)
@@ -22,14 +14,14 @@ class Model extends \Core\Model
       $this->conn->exec(
         "CREATE TABLE $db.users (
         email VARCHAR(50) NOT NULL,
-        role TINYINT UNSIGNED NOT NULL,
+        role ENUM('reader', 'editor', 'admin') NOT NULL,
         PRIMARY KEY (email),
         FOREIGN KEY (email) REFERENCES simpletables.users(email)
         )"
       );
 
       // insert current user as admin in the newly created table
-      $stmt = $this->conn->prepare("INSERT INTO $db.users (email, role) VALUES (?, " . Roles::Admin->value . ")");
+      $stmt = $this->conn->prepare("INSERT INTO $db.users (email, role) VALUES (?, 'admin')");
       $stmt->execute([$_SESSION["user"]]);
     }
   }
@@ -38,7 +30,7 @@ class Model extends \Core\Model
   {
     $except = ["information_schema", "mysql", "performance_schema", "sys", "simpletables"];
 
-    $dbs = []; // associative array — key = database name and value = role
+    $dbs = []; // associative array — key = database name, value = role
 
     $stmt = $this->conn->prepare("SHOW DATABASES");
     $stmt->execute();
@@ -49,7 +41,7 @@ class Model extends \Core\Model
         $stmt2->execute([$email]);
         $role = $stmt2->fetchColumn();
 
-        if ($role !== false) $dbs[$db] = Roles::from($role);
+        if ($role !== false) $dbs[$db] = $role;
       }
     }
 
@@ -96,13 +88,12 @@ class Model extends \Core\Model
     $this->delete_db($db);
   }
 
-  // return role integer (check Roles enum)
   public function get_db_user($db, $email)
   {
     $stmt = $this->conn->prepare("SELECT role FROM $db.users WHERE email = ?");
     $stmt->execute([$email]);
 
-    return Roles::from($stmt->fetchColumn());
+    return $stmt->fetchColumn();
   }
 
   public function get_records($db, $table)

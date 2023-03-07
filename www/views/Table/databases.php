@@ -19,7 +19,7 @@
             <a href="https://<?= $db ?>.simpletables.xyz" class="me-3">
               <i class="fa-solid fa-up-right-from-square fs-1dot125"></i>
             </a>
-            <button class="btn p-0 me-3 border-0" name="action" value="rename" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
+            <button class="btn p-0 me-3 border-0" name="action" value="rename" <?php if ($role !== "admin") echo "disabled"; ?>>
               <i class="fa-solid fa-pen-to-square text-orange fs-1dot125"></i>
             </button>
             <a href="https://<?= $db ?>.simpletables.xyz/users" class="me-3">
@@ -27,8 +27,8 @@
             </a>
             <form method="post">
               <input type="hidden" name="db" value="<?= $db ?>">
-              <input type="hidden" name="role" value="<?= $role->name ?>">
-              <button class="btn m-0 p-0 border-0" name="action" value="delete" <?php if ($role->name !== "Admin") echo "hidden"; ?>>
+              <input type="hidden" name="role" value="<?= $role ?>">
+              <button class="btn m-0 p-0 border-0" name="action" value="delete" <?php if ($role !== "admin") echo "disabled"; ?>>
                 <i class="fa-solid fa-trash text-danger fs-1dot125"></i>
               </button>
             </form>
@@ -36,12 +36,12 @@
           <td class="col">
             <form class="me-2" method="post">
               <input type="hidden" name="db" value="<?= $db ?>">
-              <input type="hidden" name="role" value="<?= $role->name ?>">
+              <input type="hidden" name="role" value="<?= $role ?>">
               <input class="w-100 border-0 bg-transparent text-dark" type="text" name="new_name" value="<?= $db ?>" disabled>
               <input type="hidden" name="action" value="rename">
             </form>
           </td>
-          <td class="col"><?= strtolower($role->name) ?></td>
+          <td class="col"><?= $role ?></td>
         </tr>
       <?php endforeach; ?>
     </tbody>
