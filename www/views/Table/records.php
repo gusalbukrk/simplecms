@@ -12,7 +12,28 @@
   <p class="fw-bold">Table doesn't exist.</p>
 <?php else : ?>
   <?php
-  $types = ["char" => "text", "varchar" => "text", "int" => "number", "tinyint unsigned" => "number"];
+  $get_field_schema = function ($name) use ($schema) {
+    return current(
+      array_filter($schema, function ($column) use ($name) {
+        return $column["Field"] === $name;
+      })
+    );
+  };
+
+  $get_field_type = function ($name) use ($get_field_schema) {
+    // get the Type property of the schema's field named $name
+    // remove any extra info inside parentheses (e.g. 'char(50)' => 'char')
+    $Type = preg_replace(
+      "/\(.*$/",
+      "",
+      $get_field_schema($name)["Type"],
+    );
+
+    // return either a valid type attribute for input element (e.g. text) or
+    // the exact type name taken from schema,
+    // if it cannot be represent by one of the types of the input element (e.g. enum)
+    return ["char" => "text", "varchar" => "text", "int" => "number"][$Type] ?? $Type;
+  };
 
   $pk_name = current(array_filter($schema, function ($column) {
     return $column["Key"] === "PRI";
@@ -54,9 +75,18 @@
             </td>
             <?php foreach ($record as $name => $value) : ?>
               <td class="col">
-                <input type="<?= $types[preg_replace("/\(\d+\)$/", "", current(array_filter($schema, function ($column) use ($name) {
-                                return $column["Field"] === $name;
-                              }))["Type"])] ?>" form="<?= "record-{$index}" ?>" name="inputs[<?= $name ?>]" value="<?= $value ?>" class="border-0 w-100 bg-transparent text-dark" disabled>
+                <?php $type = $get_field_type($name); ?>
+                <?php if ($type === "enum") : ?>
+                  <select name="inputs[<?= $name ?>]" form="<?= "record-{$index}" ?>" class="form-select form-select-sm border-dark border-opacity-50 border-width-2">
+                    <?php preg_match_all("/(?<=')\w*(?=')/", $get_field_schema($name)["Type"], $matches); ?>
+                    <?php foreach ($matches[0] as $match) : ?>
+                      <option value="<?= $match ?>" <?= $match === $value ? "selected" : "" ?>><?= ucfirst($match) ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                <?php else : ?>
+                  <!-- $type must be a valid "type" attribute value for input element -->
+                  <input name="inputs[<?= $name ?>]" type="<?= $type ?>" form="<?= "record-{$index}" ?>" value="<?= $value ?>" class="border-0 w-100 bg-transparent text-dark" disabled>
+                <?php endif; ?>
               </td>
             <?php endforeach; ?>
           </tr>
@@ -70,7 +100,17 @@
     <?php foreach ($schema as $column) : ?>
       <div class="mb-3">
         <label for="<?= $column["Field"] ?>Input" class="form-label fs-dot9 fw-bold text-dark-gray"><?= ucfirst($column["Field"]) ?></label>
-        <input id="<?= $column["Field"] ?>Input" type="<?= $types[preg_replace("/\(\d+\)$/", "", $column["Type"])] ?>" name="record[<?= $column["Field"] ?>]" class="form-control border-dark border-opacity-50 border-width-2">
+        <?php $type = $get_field_type($column["Field"]); ?>
+        <?php if ($type === "enum") : ?>
+          <select id="<?= $column["Field"] ?>Input" name="record[<?= $column["Field"] ?>]" class="form-select border-dark border-opacity-50 border-width-2">
+            <?php preg_match_all("/(?<=')\w*(?=')/", $column["Type"], $matches); ?>
+            <?php foreach ($matches[0] as $match) : ?>
+              <option value="<?= $match ?>"><?= ucfirst($match) ?></option>
+            <?php endforeach; ?>
+          </select>
+        <?php else : ?>
+          <input id="<?= $column["Field"] ?>Input" type="<?= $type ?>" name="record[<?= $column["Field"] ?>]" class="form-control border-dark border-opacity-50 border-width-2">
+        <?php endif; ?>
       </div>
     <?php endforeach; ?>
     <input class="btn btn-success fw-bold" type="submit" name="action" value="create">
