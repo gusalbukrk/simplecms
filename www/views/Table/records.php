@@ -1,8 +1,8 @@
-<div class="d-flex flex-wrap mb-5">
-  <a href="https://<?= $table === "users" ? "" : "$db." ?>simpletables.xyz" class="me-3 mb-3">
-    <i class="fa-solid fa-circle-arrow-left fs-3"></i>
+<div class="d-flex align-items-center mb-5">
+  <a href="https://<?= $table === "users" ? "" : "$db." ?>simpletables.xyz" class="me-3">
+    <i class="fa-solid fa-circle-arrow-left fs-4"></i>
   </a>
-  <h2 class="fs-4">
+  <h2 class="fs-4 mb-0">
     <span class="p-1 me-1 bg-lighter-blue"><?= explode("'", $title)[0] ?></span>'<?= explode("'", $title)[1] ?>
   </h2>
 </div>
