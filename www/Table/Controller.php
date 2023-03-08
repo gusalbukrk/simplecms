@@ -90,7 +90,9 @@ class Controller extends \Core\Controller
     );
     $table_exists = $db_exists ? $this->model->table_exists($db, $table) : false;
 
-    $title = \Utils::pluralize("$db / $table") . " records";
+    $title = $table === "users" ?
+      \Utils::pluralize("$db") . " users" :
+      \Utils::pluralize("$db / $table") . " records";
 
     if ($db_exists && $table_exists) {
       if (isset($_POST["action"])) {

@@ -1,5 +1,5 @@
 <div class="d-flex flex-wrap mb-5">
-  <a href="https://<?= $db ?>.simpletables.xyz" class="me-3 mb-3">
+  <a href="https://<?= $table === "users" ? "" : "$db." ?>simpletables.xyz" class="me-3 mb-3">
     <i class="fa-solid fa-circle-arrow-left fs-3"></i>
   </a>
   <h2 class="fs-4">
