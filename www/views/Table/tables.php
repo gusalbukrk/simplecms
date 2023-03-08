@@ -76,21 +76,23 @@
     </script>
   <?php endif; ?>
   <form id="createForm" class="max-w-350" method="post">
-    <div class="mb-4">
-      <label for="tableNameInput" class="form-label fs-dot9 fw-bold text-dark-gray">Table name</label>
-      <input type="text" id="tableNameInput" name="table" class="form-control border-dark border-opacity-50 border-width-2" pattern="\w+" required>
-    </div>
-    <div class="row mb-3 mx-0 fs-dot9 text-center fw-bold text-dark-gray">
-      <span class="col-2">PK</span>
-      <span class="col-6">Name</span>
-      <span class="col-4">Type</span>
-    </div>
-    <div id="fields" class="mb-4"></div> <!-- fields will be inserted inside here -->
-    <!-- not using button element because pressing enter would trigger this instead of submit -->
-    <div id="addButton" class="btn btn-light text-dark-gray me-1">
-      <i class="fa-solid fa-plus"></i>
-    </div>
-    <input class="btn btn-success fw-bold" type="submit" name="action" value="create">
+    <fieldset <?php if ($role !== "admin") echo "disabled"; ?>>
+      <div class="mb-4">
+        <label for="tableNameInput" class="form-label fs-dot9 fw-bold text-dark-gray">Table name</label>
+        <input type="text" id="tableNameInput" name="table" class="form-control border-dark border-opacity-50 border-width-2" pattern="\w+" required>
+      </div>
+      <div class="row mb-3 mx-0 fs-dot9 text-center fw-bold text-dark-gray">
+        <span class="col-2">PK</span>
+        <span class="col-6">Name</span>
+        <span class="col-4">Type</span>
+      </div>
+      <div id="fields" class="mb-4"></div> <!-- fields will be inserted inside here -->
+      <!-- not using button element because pressing enter would trigger this instead of submit -->
+      <div id="addButton" class="btn btn-light text-dark-gray me-1">
+        <i class="fa-solid fa-plus"></i>
+      </div>
+      <input class="btn btn-success fw-bold" type="submit" name="action" value="create">
+    </fieldset>
   </form>
   <template id="field"> <!-- field input template -->
     <div class="row mb-3 mx-0">

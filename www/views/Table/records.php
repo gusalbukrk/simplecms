@@ -68,8 +68,10 @@
               is the one triggered when the enter key is pressed -->
                 <input type="submit" form="<?= "record-{$index}" ?>" name="action" value="update" hidden>
               </form>
-              <button class="updateButton btn p-0 me-3"><i class="fa-solid fa-pen-to-square text-orange fs-1dot125"></i></button>
-              <button form="<?= "record-{$index}" ?>" class="btn p-0" name="action" value="delete">
+              <button class="updateButton btn p-0 me-3 border-0" <?php if ($role === "reader" || ($role === "editor" && $table === "users")) echo "disabled"; ?>>
+                <i class="fa-solid fa-pen-to-square text-orange fs-1dot125"></i>
+              </button>
+              <button form="<?= "record-{$index}" ?>" class="btn p-0 border-0" name="action" value="delete" <?php if ($role === "reader" || ($role === "editor" && $table === "users")) echo "disabled"; ?>>
                 <i class="fa-solid fa-trash text-danger fs-1dot125"></i>
               </button>
             </td>
@@ -95,25 +97,27 @@
     </table>
   <?php endif; ?>
   <form class="max-w-350" method="post">
-    <input type="hidden" name="db" value="<?= $db ?>">
-    <input type="hidden" name="table" value="<?= $table ?>">
-    <?php foreach ($schema as $column) : ?>
-      <div class="mb-3">
-        <label for="<?= $column["Field"] ?>Input" class="form-label fs-dot9 fw-bold text-dark-gray"><?= ucfirst($column["Field"]) ?></label>
-        <?php $type = $get_field_type($column["Field"]); ?>
-        <?php if ($type === "enum") : ?>
-          <select id="<?= $column["Field"] ?>Input" name="record[<?= $column["Field"] ?>]" class="form-select border-dark border-opacity-50 border-width-2">
-            <?php preg_match_all("/(?<=')\w*(?=')/", $column["Type"], $matches); ?>
-            <?php foreach ($matches[0] as $match) : ?>
-              <option value="<?= $match ?>"><?= ucfirst($match) ?></option>
-            <?php endforeach; ?>
-          </select>
-        <?php else : ?>
-          <input id="<?= $column["Field"] ?>Input" type="<?= $type ?>" name="record[<?= $column["Field"] ?>]" class="form-control border-dark border-opacity-50 border-width-2">
-        <?php endif; ?>
-      </div>
-    <?php endforeach; ?>
-    <input class="btn btn-success fw-bold" type="submit" name="action" value="create">
+    <fieldset <?php if ($role === "reader" || ($role === "editor" && $table === "users")) echo "disabled"; ?>>
+      <input type="hidden" name="db" value="<?= $db ?>">
+      <input type="hidden" name="table" value="<?= $table ?>">
+      <?php foreach ($schema as $column) : ?>
+        <div class="mb-3">
+          <label for="<?= $column["Field"] ?>Input" class="form-label fs-dot9 fw-bold text-dark-gray"><?= ucfirst($column["Field"]) ?></label>
+          <?php $type = $get_field_type($column["Field"]); ?>
+          <?php if ($type === "enum") : ?>
+            <select id="<?= $column["Field"] ?>Input" name="record[<?= $column["Field"] ?>]" class="form-select border-dark border-opacity-50 border-width-2">
+              <?php preg_match_all("/(?<=')\w*(?=')/", $column["Type"], $matches); ?>
+              <?php foreach ($matches[0] as $match) : ?>
+                <option value="<?= $match ?>"><?= ucfirst($match) ?></option>
+              <?php endforeach; ?>
+            </select>
+          <?php else : ?>
+            <input id="<?= $column["Field"] ?>Input" type="<?= $type ?>" name="record[<?= $column["Field"] ?>]" class="form-control border-dark border-opacity-50 border-width-2">
+          <?php endif; ?>
+        </div>
+      <?php endforeach; ?>
+      <input class="btn btn-success fw-bold" type="submit" name="action" value="create">
+    </fieldset>
   </form>
   <script>
     // iterate through every row of the table used to list the records

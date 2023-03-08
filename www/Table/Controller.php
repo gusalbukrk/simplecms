@@ -121,6 +121,7 @@ class Controller extends \Core\Controller
         }
       }
 
+      $role = $this->model->get_db_user($db, $_SESSION["user"]);
       $schema = $this->model->get_columns_schema($db, $table);
       $records = $this->model->get_records($db, $table);
     }
@@ -132,6 +133,7 @@ class Controller extends \Core\Controller
       "db_exists" => $db_exists,
       "table" => $table,
       "table_exists" => $table_exists,
+      "role" => $role,
       "schema" => $schema ?? null,
       "records" => $records ?? null
     ]);
