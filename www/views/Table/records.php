@@ -77,7 +77,7 @@
               <td class="col">
                 <?php $type = $get_field_type($name); ?>
                 <?php if ($type === "enum") : ?>
-                  <select name="inputs[<?= $name ?>]" form="<?= "record-{$index}" ?>" class="form-select form-select-sm border-dark border-opacity-50 border-width-2">
+                  <select name="inputs[<?= $name ?>]" form="<?= "record-{$index}" ?>" class="form-select form-select-sm border-dark border-opacity-50 border-width-2" required disabled>
                     <?php preg_match_all("/(?<=')\w*(?=')/", $get_field_schema($name)["Type"], $matches); ?>
                     <?php foreach ($matches[0] as $match) : ?>
                       <option value="<?= $match ?>" <?= $match === $value ? "selected" : "" ?>><?= ucfirst($match) ?></option>
@@ -85,7 +85,7 @@
                   </select>
                 <?php else : ?>
                   <!-- $type must be a valid "type" attribute value for input element -->
-                  <input name="inputs[<?= $name ?>]" type="<?= $type ?>" form="<?= "record-{$index}" ?>" value="<?= $value ?>" class="border-0 w-100 bg-transparent text-dark" disabled>
+                  <input name="inputs[<?= $name ?>]" type="<?= $type ?>" form="<?= "record-{$index}" ?>" value="<?= $value ?>" class="border-0 w-100 bg-transparent text-dark" required disabled>
                 <?php endif; ?>
               </td>
             <?php endforeach; ?>
@@ -120,9 +120,11 @@
     // in order to add the following event: when one of the rename buttons is clicked,
     // focus on the first input of that respective row
     document.querySelectorAll('table#records tbody tr').forEach(row => {
-      // get all inputs inside row, ignoring first column because it only contains action buttons
-      const inputs = row.querySelectorAll('td:not(:first-child) input');
+      // get immediate descendant (e.g. input, select) for every td element in current row
+      // but ignore the first td because it only contains action buttons
+      const inputs = row.querySelectorAll('td:not(:first-child) > *');
 
+      // when this row's update button is clicked, enable all inputs inside row
       row.querySelector('td:nth-child(1) button.updateButton').addEventListener('click', e => {
         inputs.forEach(input => {
           input.disabled = false;
@@ -132,5 +134,17 @@
         inputs[0].select();
       });
     })
+
+    // submit form when enter key is pressed inside a select element
+    document.querySelectorAll('table#records tbody tr select').forEach(select => {
+      select.addEventListener('keypress', e => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          select.form.requestSubmit(
+            e.target.form.querySelector('input[type="submit"][value="update"]')
+          );
+        }
+      });
+    });
   </script>
 <?php endif; ?>
