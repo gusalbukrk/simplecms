@@ -1,0 +1,27 @@
+POST https://simpletables.xyz/signup
+Content-Type: application/x-www-form-urlencoded
+
+action=sign up
+&email=gus2@outlook.com
+&password=pass1234
+
+###
+
+# by default, REST Client extension remembers cookies for subsequent requests
+# therefore, you'll be logged after run request below until logout endpoint is hit
+# there's also a clear cookie command but it hasn't been released yet
+# https://github.com/Huachao/vscode-restclient/pull/1064
+POST https://simpletables.xyz/login
+Content-Type: application/x-www-form-urlencoded
+
+action=log in
+&email=gusalbukrk@gmail.com
+&password=pass1234
+
+###
+
+GET https://simpletables.xyz/logout
+
+###
+
+GET https://simpletables.xyz
